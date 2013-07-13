@@ -8,7 +8,9 @@ It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesom
 
 There is no networking layer. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
 
-## Example Usage
+## Usage
+
+### Basic Mapping
 
 Given a model
 
@@ -33,9 +35,46 @@ This makes it easy to keep any direct knowledge of the idiosyncrasies of the ser
 
 
 ## TODO
-what to do about undefined keys?
-Configured at 3 levels:
+### Undefined Keys
+
+The behavior of undefined keys should be configurable at 3 levels:
 
 1. Raise, because I should know about everything.
 2. Drop unrecognized keys. We don't need them, but we shouldn't crash.
 3. Add keys to a dictionary so that serialization/deserialization can be symmetric
+
+Option 2 is currently the only behavior, and I'm inclined to leave is as the default behavior.
+
+### Recursive Mapping
+
+If a mappable object has a property whose type is a mappable object, we should attempt to map that object. Work on this is under way.
+
+### Blocks to handle special types
+
+Users should be able to pass a dictionary of blocks when a particular field requires special handling. Say a service sends back a dicitonary that looks something like this:
+
+	{
+	    "color": [
+	        122,
+	        50,
+	        80
+	    ]
+	}
+
+and we expect to map it to a model like this
+
+
+	@interface MYColorModel : NSObject
+	@property (nonatomic, strong) UIColor *color;
+	@end
+
+I'd like the developer to be able to specify how to adapt the response
+
+    id(^colorFromNumberArray)(id) = ^(NSArray *numberArray) {
+        return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
+                               green:[numberArray[0] integerValue]/255.0
+                                blue:[numberArray[0] integerValue]/255.0
+                               alpha:1];
+    };
+    OMAddAdapters([MYColorModel class], @{@"color": colorFromNumberArray});
+
