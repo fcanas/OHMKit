@@ -51,8 +51,6 @@ void OMMakeMappable(Class c)
 void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary)
 {
     OMMakeMappable(c);
-//    const char *class_name = class_getName(c);
-//    Class meta_class = objc_getMetaClass(class_name);
     [(Class<OMMappable>)c _OMSetMappingDictionary:mappingDictionary];
 }
 
