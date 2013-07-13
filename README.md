@@ -22,7 +22,7 @@ Anywhere in you application, make the model mappable, and pass it a dictionary o
 
 	OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber"});
 	
-And now anywhere in your application, objects of the class `OMTestObject` can be hydrated with a dictionary form a service whose keys will be translated by the mapping dictionary you provided.
+And now anywhere in your application, objects of the class `OMTestObject` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
 	OMTestModel *testModel = [[OMTestModel alloc] init];
     
