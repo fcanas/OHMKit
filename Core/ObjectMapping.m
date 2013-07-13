@@ -11,7 +11,22 @@
 
 const int _kOMClassMappingDictionaryKey;
 
-#pragma mark - Class Method Overrides
+#pragma mark - The Mixin
+
+@implementation NSObject (OMMappingSwizzleBase)
+
+- (void)OM_setValue:(id)value forKey:(NSString *)key
+{
+    [self OM_setValue:value forKey:key];
+}
+
+@end
+
+@protocol OMMappablePrivate <OMMappable>
+
+- (void)OM_Original_setValue:(id)value forKey:(NSString *)key;
+
+@end
 
 void _OMSetMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
@@ -30,6 +45,15 @@ void _OMSetValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
     }
 }
 
+void _OMSetValueForKey_IMP(id self, SEL _cmd, id value, NSString *key)
+{
+    objc_property_t theProperty = class_getProperty([self class], [key UTF8String]);
+    
+    const char * propertyAttrs = property_getAttributes(theProperty);
+    
+    [(id<OMMappablePrivate>)self OM_Original_setValue:value forKey:key];
+}
+
 #pragma mark - Public
 
 void OMMakeMappable(Class c)
@@ -39,13 +63,16 @@ void OMMakeMappable(Class c)
     Class meta_class = objc_getMetaClass(class_name);
     
     // Override Class method to set mapping dictionary
-    struct objc_method_description m = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetMappingDictionary:), YES, NO);
+    struct objc_method_description m = protocol_getMethodDescription(@protocol(OMMappablePrivate), @selector(_OMSetMappingDictionary:), YES, NO);
     
-    BOOL protocol_successful = class_addProtocol(meta_class, @protocol(OMMappable));
+    BOOL protocol_successful = class_addProtocol(meta_class, @protocol(OMMappablePrivate));
     BOOL class_mapping_successful = class_addMethod(meta_class, @selector(_OMSetMappingDictionary:), (IMP)_OMSetMappingDictionary_Class_IMP, m.types);
     
+    IMP previousSVFUKImplementation = class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
     
-    IMP previousImplementation = class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
+    Method svfk = class_getInstanceMethod(c, @selector(setValue:forKey:));
+    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(setValue:forKey:));
+    method_exchangeImplementations(<#Method m1#>, <#Method m2#>)
 }
 
 void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary)

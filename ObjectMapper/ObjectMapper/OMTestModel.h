@@ -12,4 +12,5 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *favoriteWord;
 @property (nonatomic, assign) NSInteger favoriteNumber;
+@property (nonatomic, strong) OMTestModel *favoriteModel;
 @end

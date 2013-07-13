@@ -15,11 +15,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber"});
+    OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"});
     
     OMTestModel *testModel = [[OMTestModel alloc] init];
     
-    [testModel setValuesForKeysWithDictionary:@{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2}];
+    NSDictionary *innerModel = @{@"name": @"Music", @"favorite_word": @"glitter", @"favorite_number" : @7};
+//    NSDictionary *outerModel = @{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2, @"favorite_model" : innerModel};
+    
+    [testModel setValuesForKeysWithDictionary:innerModel];
     NSLog(@"%@", testModel);
 }
 
