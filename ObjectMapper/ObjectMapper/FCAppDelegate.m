@@ -20,9 +20,9 @@
     OMTestModel *testModel = [[OMTestModel alloc] init];
     
     NSDictionary *innerModel = @{@"name": @"Music", @"favorite_word": @"glitter", @"favorite_number" : @7};
-//    NSDictionary *outerModel = @{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2, @"favorite_model" : innerModel};
+    NSDictionary *outerModel = @{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2, @"favorite_model" : innerModel};
     
-    [testModel setValuesForKeysWithDictionary:innerModel];
+    [testModel setValuesForKeysWithDictionary:outerModel];
     NSLog(@"%@", testModel);
 }
 
