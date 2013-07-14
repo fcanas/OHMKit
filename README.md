@@ -35,7 +35,7 @@ This makes it easy to keep any direct knowledge of the idiosyncrasies of the ser
 
 ### Recursive Mapping
 
-Recursive mapping is free. If a mappable object has a property whose type is a mappable object, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
+You don't have to do anything special to get recursive mapping of `OMMappable` objects. If a mappable object has a property whose type is a mappable object, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
 
     OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"});
     
