@@ -23,6 +23,9 @@ Given a model
 Anywhere in you application, make the model mappable, and pass it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
 	OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber"});
+	// This can also be done in separate steps, and the mapping dictionary can be reset at any time:
+	// OMMakeMappable([OMTestModel class]);
+	// [(id)[OMTestModel class] _OMSetMappingDictionary:@{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"}];
 	
 And now anywhere in your application, objects of the class `OMTestObject` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
@@ -35,7 +38,7 @@ This makes it easy to keep any direct knowledge of the idiosyncrasies of the ser
 
 ### Recursive Mapping
 
-You don't have to do anything special to get recursive mapping of `OMMappable` objects. If a mappable object has a property whose type is a mappable object, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
+You don't have to do anything special to get recursive mapping of `OMMappable` objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
 
     OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"});
     
