@@ -6,7 +6,9 @@ This project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Object
 
 It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
-There is no networking layer. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
+This project doesn't handle networking. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
+
+This project doesn't handle resource routes. Use [SOCKit](https://github.com/jverkoey/sockit).
 
 ## Usage
 
