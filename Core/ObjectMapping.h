@@ -9,7 +9,12 @@
 
 @protocol OMMappable
 + (void)_OMSetMappingDictionary:(NSDictionary *)dictionary;
++ (void)_OMSetAdapterDictionary:(NSDictionary *)dictionary;
 @end
 
+typedef id(^OMValueAdapterBlock)(id);
+
 extern void OMMakeMappable(Class c);
+extern void OMSetMapping(Class c, NSDictionary *mappingDictionary);
+extern void OMSetAdapter(Class c, NSDictionary *adapterDictionary);
 void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary);

@@ -52,11 +52,10 @@ You don't have to do anything special to get recursive mapping of `OMMappable` o
     [testModel setValuesForKeysWithDictionary:outerModel];
     // testModel.favoriteModel is an instance of OMTestModel 
     // hydrated with the innerModel dictionary.
-
-## TODO
+    
 ### Blocks to handle special types
 
-Users should be able to pass a dictionary of blocks when a particular field requires special handling. Say a service sends back a dicitonary that looks something like this:
+Users can pass a dictionary of blocks when a particular field requires special handling. Say a service sends back a dicitonary that looks something like this:
 
 	{
 	    "color": [
@@ -69,20 +68,27 @@ Users should be able to pass a dictionary of blocks when a particular field requ
 and we expect to map it to a model like this
 
 
-	@interface MYColorModel : NSObject
+	@interface OMTestModel : NSObject
 	@property (nonatomic, strong) UIColor *color;
 	@end
 
-I'd like the developer to be able to specify how to adapt the response
-
-    id(^colorFromNumberArray)(id) = ^(NSArray *numberArray) {
-        return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
-                               green:[numberArray[0] integerValue]/255.0
-                                blue:[numberArray[0] integerValue]/255.0
+You can how to adapt the response
+	
+	OMMakeMappable([OMTestModel class]);
+    OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
+        return [NSColor colorWithRed:[numberArray[0] integerValue]/255.0
+                               green:[numberArray[1] integerValue]/255.0
+                                blue:[numberArray[2] integerValue]/255.0
                                alpha:1];
     };
-    OMAddAdapters([MYColorModel class], @{@"color": colorFromNumberArray});
+    OMSetAdapter([OMTestModel class], @{@"color": colorFromNumberArray});
 
+Note that the key for the adapter is the key on the model object, not on the response.
+
+The `OMValueAdapterBlock` type is simply defined as a block that takes an `id` and returns an `id`. `typedef id(^OMValueAdapterBlock)(id);`
+
+
+## TODO
 
 ### Undefined Keys
 

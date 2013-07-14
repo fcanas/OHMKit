@@ -13,4 +13,5 @@
 @property (nonatomic, strong) NSString *favoriteWord;
 @property (nonatomic, assign) NSInteger favoriteNumber;
 @property (nonatomic, strong) OMTestModel *favoriteModel;
+@property (nonatomic, strong) NSColor *favoriteColor;
 @end

@@ -13,10 +13,11 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:
-            @"OMTestModel (0x%x) name: %@, favorite word: %@, favoriteNumber: %ld favoriteModelName:%@",
+            @"OMTestModel (0x%x) name: %@, favorite word: %@, favoriteNumber: %ld, favoriteColor: %@, favoriteModelName:%@",
             ((int)self), self.name,
             self.favoriteWord,
             self.favoriteNumber,
+            self.favoriteColor,
             self.favoriteModel.name];
 }
 

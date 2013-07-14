@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 const int _kOMClassMappingDictionaryKey;
+const int _kOMClassAdapterDictionaryKey;
 
 #pragma mark - The Mixin
 
@@ -17,13 +18,21 @@ const int _kOMClassMappingDictionaryKey;
 
 - (void)OM_setValue:(id)value forKey:(NSString *)key
 {
+    // Adapter
+    NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+    OMValueAdapterBlock adapterForKey = adapters[key];
+    if (adapterForKey) {
+        value = adapterForKey(value);
+    }
+    
+    // Recursive Mapping
     objc_property_t p = class_getProperty([self class], [key UTF8String]);
     uint propertyCount = 0;
     objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
     
     for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
         objc_property_attribute_t property = properties[propertyIndex];
-        if (property.name[0]=='T' && strlen(property.value)>4 && property.value[0] == '@') {
+        if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
             const char *name = property.value;
             Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
             if (class_conformsToProtocol(propertyClass, @protocol(OMMappable))) {
@@ -40,8 +49,11 @@ const int _kOMClassMappingDictionaryKey;
     }
     free(properties);
     
+    // No recursive mapping needed. Proceed as usual
     [self OM_setValue:value forKey:key];
 }
+
+@end
 
 static const char *getPropertyType(objc_property_t property) {
     const char *attributes = property_getAttributes(property);
@@ -56,15 +68,17 @@ static const char *getPropertyType(objc_property_t property) {
     return "@";
 }
 
-@end
-
+#pragma mark - OMMappable methods
 
 void _OMSetMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
-    objc_setAssociatedObject(self, &_kOMClassMappingDictionaryKey, dictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    OMSetMapping(self, dictionary);
 }
 
-#pragma mark - Instance Method Overrides
+void _OMSetAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
+{
+    OMSetAdapter(self, dictionary);
+}
 
 void _OMSetValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
 {
@@ -76,7 +90,17 @@ void _OMSetValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
     }
 }
 
-#pragma mark - Public
+#pragma mark - Public Functions
+
+void OMSetMapping(Class c, NSDictionary *mappingDictionary)
+{
+    objc_setAssociatedObject(c, &_kOMClassMappingDictionaryKey, mappingDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+void OMSetAdapter(Class c, NSDictionary *adapterDicionary)
+{
+    objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 void OMMakeMappable(Class c)
 {
@@ -86,9 +110,11 @@ void OMMakeMappable(Class c)
     
     // Override Class method to set mapping dictionary
     struct objc_method_description m = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetMappingDictionary:), YES, NO);
+    struct objc_method_description a = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetAdapterDictionary:), YES, NO);
     
     BOOL protocol_successful = class_addProtocol(c, @protocol(OMMappable));
     BOOL class_mapping_successful = class_addMethod(meta_class, @selector(_OMSetMappingDictionary:), (IMP)_OMSetMappingDictionary_Class_IMP, m.types);
+    BOOL class_adapter_successful = class_addMethod(meta_class, @selector(_OMSetAdapterDictionary:), (IMP)_OMSetAdapterDictionary_Class_IMP, a.types);
     
     IMP previousSVFUKImplementation = class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
     
@@ -100,6 +126,6 @@ void OMMakeMappable(Class c)
 void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary)
 {
     OMMakeMappable(c);
-    [(Class<OMMappable>)c _OMSetMappingDictionary:mappingDictionary];
+    OMSetMapping(c, mappingDictionary);
 }
 
