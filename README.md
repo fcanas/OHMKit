@@ -2,13 +2,13 @@
 
 Map service responses to objects.
 
-This project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a RESTful web service.
+This project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a web service. It makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
 
 It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
-This project doesn't handle networking. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
+This project doesn't know about networks. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
 
-This project doesn't handle resource routes. Use [SOCKit](https://github.com/jverkoey/sockit).
+This project doesn't know about routes. Use [SOCKit](https://github.com/jverkoey/sockit).
 
 ## Usage
 
@@ -24,66 +24,92 @@ Given a model
 
 Anywhere in you application, make the model mappable, and pass it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
-	OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber"});
-	// This can also be done in separate steps, and the mapping dictionary can be reset at any time:
-	// OMMakeMappable([OMTestModel class]);
-	// [(id)[OMTestModel class] _OMSetMappingDictionary:@{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"}];
+```
+OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word"  : @"favoriteWord",
+                                                    @"favorite_number": @"favoriteNumber"});
+```
+
+This can also be done in separate steps, and the mapping dictionary can be reset at any time:
+
+```
+OMMakeMappable([OMTestModel class]);
+OMSetMapping([OMTestModel class], @{@"favorite_word"  : @"favoriteWord",
+                                    @"favorite_number": @"favoriteNumber");
+```
 	
 And now anywhere in your application, objects of the class `OMTestObject` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
-	OMTestModel *testModel = [[OMTestModel alloc] init];
-    
-    [testModel setValuesForKeysWithDictionary:@{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2}];
-    NSLog(@"%@", testModel);
+```
+OMTestModel *testModel = [[OMTestModel alloc] init];
 
-This makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
+[testModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
+                                            @"favorite_word": @"absurd",
+                                            @"favorite_number" : @47];
+```
 
 ### Recursive Mapping
 
 You don't have to do anything special to get recursive mapping of `OMMappable` objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
 
-    OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word" : @"favoriteWord", @"favorite_number" : @"favoriteNumber", @"favorite_model" : @"favoriteModel"});
-    
-    OMTestModel *testModel = [[OMTestModel alloc] init];
-    
-    NSDictionary *innerModel = @{@"name": @"Music", @"favorite_word": @"glitter", @"favorite_number" : @7};
-    NSDictionary *outerModel = @{@"name": @"Fabian", @"favorite_word": @"absurd", @"favorite_number" : @2, @"favorite_model" : innerModel};
-    
-    [testModel setValuesForKeysWithDictionary:outerModel];
-    // testModel.favoriteModel is an instance of OMTestModel 
-    // hydrated with the innerModel dictionary.
-    
-### Blocks to handle special types
+```
+OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word"  : @"favoriteWord", 
+                                                    @"favorite_number": @"favoriteNumber", 
+                                                    @"favorite_model" : @"favoriteModel"});
 
-Users can pass a dictionary of blocks when a particular field requires special handling. Say a service sends back a dicitonary that looks something like this:
+OMTestModel *testModel = [[OMTestModel alloc] init];
 
-	{
-	    "color": [
-	        122,
-	        50,
-	        80
-	    ]
-	}
+NSDictionary *innerModel = @{@"name"           : @"Music", 
+                             @"favorite_word"  : @"glitter", 
+                             @"favorite_number": @7};
+                             
+NSDictionary *outerModel = @{@"name"           : @"Fabian", 
+                             @"favorite_word"  : @"absurd", 
+                             @"favorite_number": @2, 
+                             @"favorite_model" : innerModel};
+
+[testModel setValuesForKeysWithDictionary:outerModel];
+```
+
+Now, `testModel.favoriteModel` is an instance of OMTestModel hydrated with the innerModel dictionary.
+
+Internally, the new model object is initalized with `[InternalModelClass alloc] init]`, and then hydrated with `[internalModel setValuesForKeysWithDictionary:dictionary]`. If you have a model that needs special consideration for initialization, use an adapter block.
+    
+### Adapter Blocks to handle special properties
+
+Users can pass a dictionary of blocks for field requiring special handling. Say a service sends back a dicitonary that looks something like this:
+
+```
+{
+    "color": [
+        122,
+        50,
+        80
+    ]
+}
+```
 
 and we expect to map it to a model like this
 
+```
+@interface OMTestModel : NSObject
+@property (nonatomic, strong) UIColor *color;
+@end
+```
 
-	@interface OMTestModel : NSObject
-	@property (nonatomic, strong) UIColor *color;
-	@end
+You can adapt the response with an adapter block:
 
-You can how to adapt the response
-	
-	OMMakeMappable([OMTestModel class]);
-    OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
-        return [NSColor colorWithRed:[numberArray[0] integerValue]/255.0
-                               green:[numberArray[1] integerValue]/255.0
-                                blue:[numberArray[2] integerValue]/255.0
-                               alpha:1];
-    };
-    OMSetAdapter([OMTestModel class], @{@"color": colorFromNumberArray});
+```	
+OMMakeMappable([OMTestModel class]);
+OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
+    return [NSColor colorWithRed:[numberArray[0] integerValue]/255.0
+                           green:[numberArray[1] integerValue]/255.0
+                            blue:[numberArray[2] integerValue]/255.0
+                           alpha:1];
+};
+OMSetAdapter([OMTestModel class], @{@"color": colorFromNumberArray});
+```
 
-Note that the key for the adapter is the key on the model object, not on the response.
+Note that the key for the adapter is the key on the model object, not on the response. And adapters are added for a property, not a type. If the above example had multiple properties that were colors, you would have to set an adapter block for each property. It would be smart to reuse adapter blocks in your code.
 
 The `OMValueAdapterBlock` type is simply defined as a block that takes an `id` and returns an `id`. `typedef id(^OMValueAdapterBlock)(id);`
 
