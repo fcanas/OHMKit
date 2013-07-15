@@ -31,41 +31,6 @@
     [super tearDown];
 }
 
-#pragma mark - Full Suite Test
-
-- (void)testEverything
-{
-    OMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
-                                          @"favorite_number" : @"favoriteNumber",
-                                          @"favorite_model" : @"favoriteModel",
-                                          @"favorite_color" : @"favoriteColor"});
-    OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
-        return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
-                               green:[numberArray[1] integerValue]/255.0
-                                blue:[numberArray[2] integerValue]/255.0
-                               alpha:1];
-    };
-    OMSetAdapter([OMTBasicModel class], @{@"favoriteColor": colorFromNumberArray});
-    
-    OMTBasicModel *testModel = [[OMTBasicModel alloc] init];
-    
-    NSDictionary *innerModel = @{@"name": @"Music",
-                                 @"favorite_word": @"glitter",
-                                 @"favorite_number" : @7,
-                                 @"favorite_color" : @[@194,@0,@242]};
-    NSDictionary *outerModel = @{@"name": @"Fabian",
-                                 @"favorite_word": @"absurd",
-                                 @"favorite_number" : @47,
-                                 @"favorite_model" : innerModel,
-                                 @"favorite_color" : @[@48,@107,@91]};
-    
-    [testModel setValuesForKeysWithDictionary:outerModel];
-    
-    XCTAssertTrue([testModel.favoriteModel isKindOfClass:[OMTBasicModel class]], @"Recursive Mapping probably worked");
-    XCTAssertTrue([testModel.favoriteColor isKindOfClass:[UIColor class]], @"Value Adapter for Color probably worked");
-    XCTAssertTrue([testModel.favoriteModel.favoriteColor isKindOfClass:[UIColor class]], @"Value Adapter for Color in recursive mapping probably worked");
-}
-
 #pragma mark - Basic Class Manipulation & Hydration
 
 - (void)testProtocolConformation
@@ -184,6 +149,41 @@
     [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
 
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+}
+
+#pragma mark - All-Encompassing Test
+
+- (void)testEverything
+{
+    OMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
+                                          @"favorite_number" : @"favoriteNumber",
+                                          @"favorite_model" : @"favoriteModel",
+                                          @"favorite_color" : @"favoriteColor"});
+    OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
+        return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
+                               green:[numberArray[1] integerValue]/255.0
+                                blue:[numberArray[2] integerValue]/255.0
+                               alpha:1];
+    };
+    OMSetAdapter([OMTBasicModel class], @{@"favoriteColor": colorFromNumberArray});
+    
+    OMTBasicModel *testModel = [[OMTBasicModel alloc] init];
+    
+    NSDictionary *innerModel = @{@"name": @"Music",
+                                 @"favorite_word": @"glitter",
+                                 @"favorite_number" : @7,
+                                 @"favorite_color" : @[@194,@0,@242]};
+    NSDictionary *outerModel = @{@"name": @"Fabian",
+                                 @"favorite_word": @"absurd",
+                                 @"favorite_number" : @47,
+                                 @"favorite_model" : innerModel,
+                                 @"favorite_color" : @[@48,@107,@91]};
+    
+    [testModel setValuesForKeysWithDictionary:outerModel];
+    
+    XCTAssertTrue([testModel.favoriteModel isKindOfClass:[OMTBasicModel class]], @"Recursive Mapping probably worked");
+    XCTAssertTrue([testModel.favoriteColor isKindOfClass:[UIColor class]], @"Value Adapter for Color probably worked");
+    XCTAssertTrue([testModel.favoriteModel.favoriteColor isKindOfClass:[UIColor class]], @"Value Adapter for Color in recursive mapping probably worked");
 }
 
 @end
