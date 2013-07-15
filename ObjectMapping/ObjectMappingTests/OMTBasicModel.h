@@ -1,17 +1,18 @@
 //
-//  OMTestModel.h
-//  ObjectMapper
+//  OMTBasicModel.h
+//  ObjectMapping
 //
-//  Created by Fabian Canas on 7/12/13.
+//  Created by Fabian Canas on 7/14/13.
 //  Copyright (c) 2013 Fabian Canas. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface OMTestModel : NSObject
+@interface OMTBasicModel : NSObject
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *favoriteWord;
 @property (nonatomic, assign) NSInteger favoriteNumber;
-@property (nonatomic, strong) OMTestModel *favoriteModel;
-@property (nonatomic, strong) NSColor *favoriteColor;
+@property (nonatomic, strong) UIColor *favoriteColor;
+@property (nonatomic, strong) OMTBasicModel *favoriteModel;
 @end
