@@ -77,19 +77,6 @@ const int _kOMClassAdapterDictionaryKey;
 
 @end
 
-static const char *getPropertyType(objc_property_t property) {
-    const char *attributes = property_getAttributes(property);
-    char buffer[1 + strlen(attributes)];
-    strcpy(buffer, attributes);
-    char *state = buffer, *attribute;
-    while ((attribute = strsep(&state, ",")) != NULL) {
-        if (attribute[0] == 'T') {
-            return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
-        }
-    }
-    return "@";
-}
-
 #pragma mark - OMMappable methods
 
 void _OMSetMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
