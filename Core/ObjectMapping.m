@@ -134,11 +134,11 @@ void OMMakeMappable(Class c)
     struct objc_method_description m = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetMappingDictionary:), YES, NO);
     struct objc_method_description a = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetAdapterDictionary:), YES, NO);
     
-    BOOL protocol_successful = class_addProtocol(c, @protocol(OMMappable));
-    BOOL class_mapping_successful = class_addMethod(meta_class, @selector(_OMSetMappingDictionary:), (IMP)_OMSetMappingDictionary_Class_IMP, m.types);
-    BOOL class_adapter_successful = class_addMethod(meta_class, @selector(_OMSetAdapterDictionary:), (IMP)_OMSetAdapterDictionary_Class_IMP, a.types);
+    class_addProtocol(c, @protocol(OMMappable));
+    class_addMethod(meta_class, @selector(_OMSetMappingDictionary:), (IMP)_OMSetMappingDictionary_Class_IMP, m.types);
+    class_addMethod(meta_class, @selector(_OMSetAdapterDictionary:), (IMP)_OMSetAdapterDictionary_Class_IMP, a.types);
     
-    IMP previousSVFUKImplementation = class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
+    class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
     
     Method svfk = class_getInstanceMethod(c, @selector(setValue:forKey:));
     Method svfk_om = class_getInstanceMethod([NSObject class], @selector(OM_setValue:forKey:));
