@@ -16,47 +16,48 @@ This project doesn't know about routes. Use [SOCKit](https://github.com/jverkoey
 
 Given a model
 
-	@interface OMTestModel : NSObject
+	@interface MYModel : NSObject
 	@property (nonatomic, strong) NSString *name;
 	@property (nonatomic, strong) NSString *favoriteWord;
 	@property (nonatomic, assign) NSInteger favoriteNumber;
+	@property (nonatomic, assign) MYModel *favoriteModel;
 	@end
 
 Anywhere in you application, make the model mappable, and pass it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
 ```
-OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word"  : @"favoriteWord",
-                                                    @"favorite_number": @"favoriteNumber"});
+OMMakeMappableWithDictionary([MYModel class], @{@"favorite_word"  : @"favoriteWord",
+                                                @"favorite_number": @"favoriteNumber"});
 ```
 
 This can also be done in separate steps, and the mapping dictionary can be reset at any time:
 
 ```
-OMMakeMappable([OMTestModel class]);
-OMSetMapping([OMTestModel class], @{@"favorite_word"  : @"favoriteWord",
-                                    @"favorite_number": @"favoriteNumber");
+OMMakeMappable([MYModel class]);
+OMSetMapping([MYModel class], @{@"favorite_word"  : @"favoriteWord",
+                                @"favorite_number": @"favoriteNumber");
 ```
 	
-And now anywhere in your application, objects of the class `OMTestObject` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
+And now anywhere in your application, objects of the class `MYModel` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
 ```
-OMTestModel *testModel = [[OMTestModel alloc] init];
+MYModel *testModel = [[MYModel alloc] init];
 
-[testModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
-                                            @"favorite_word": @"absurd",
-                                            @"favorite_number" : @47];
+[testModel setValuesForKeysWithDictionary:@{@"name"           : @"Fabian",
+                                            @"favorite_word"  : @"absurd",
+                                            @"favorite_number": @47];
 ```
 
 ### Recursive Mapping
 
-You don't have to do anything special to get recursive mapping of `OMMappable` objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dicitonary, we'll instantiate a new model object and hydrate it.
+You don't have to do anything special to get recursive mapping of mappable objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it.
 
 ```
-OMMakeMappableWithDictionary([OMTestModel class], @{@"favorite_word"  : @"favoriteWord", 
-                                                    @"favorite_number": @"favoriteNumber", 
-                                                    @"favorite_model" : @"favoriteModel"});
+OMMakeMappableWithDictionary([MYModel class], @{@"favorite_word"  : @"favoriteWord", 
+                                                @"favorite_number": @"favoriteNumber", 
+                                                @"favorite_model" : @"favoriteModel"});
 
-OMTestModel *testModel = [[OMTestModel alloc] init];
+MYModel *testModel = [[MYModel alloc] init];
 
 NSDictionary *innerModel = @{@"name"           : @"Music", 
                              @"favorite_word"  : @"glitter", 
@@ -70,13 +71,13 @@ NSDictionary *outerModel = @{@"name"           : @"Fabian",
 [testModel setValuesForKeysWithDictionary:outerModel];
 ```
 
-Now, `testModel.favoriteModel` is an instance of OMTestModel hydrated with the innerModel dictionary.
+Now, `testModel.favoriteModel` is an instance of MYModel hydrated with the innerModel dictionary.
 
-Internally, the new model object is initalized with `[InternalModelClass alloc] init]`, and then hydrated with `[internalModel setValuesForKeysWithDictionary:dictionary]`. If you have a model that needs special consideration for initialization, use an adapter block.
-    
+Internally, the new model object is initialized with `[InternalModelClass alloc] init]`, and then hydrated with `[internalModel setValuesForKeysWithDictionary:dictionary]`. If you have a model that needs special consideration for initialization, use an adapter block.
+
 ### Adapter Blocks to handle special properties
 
-Users can pass a dictionary of blocks for field requiring special handling. Say a service sends back a dicitonary that looks something like this:
+Users can pass a dictionary of blocks for field requiring special handling. Say a service sends back a dictionary that looks something like this:
 
 ```
 {
@@ -91,7 +92,7 @@ Users can pass a dictionary of blocks for field requiring special handling. Say 
 and we expect to map it to a model like this
 
 ```
-@interface OMTestModel : NSObject
+@interface MYModel : NSObject
 @property (nonatomic, strong) UIColor *color;
 @end
 ```
@@ -99,14 +100,14 @@ and we expect to map it to a model like this
 You can adapt the response with an adapter block:
 
 ```	
-OMMakeMappable([OMTestModel class]);
+OMMakeMappable([MYModel class]);
 OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
     return [NSColor colorWithRed:[numberArray[0] integerValue]/255.0
                            green:[numberArray[1] integerValue]/255.0
                             blue:[numberArray[2] integerValue]/255.0
                            alpha:1];
 };
-OMSetAdapter([OMTestModel class], @{@"color": colorFromNumberArray});
+OMSetAdapter([MYModel class], @{@"color": colorFromNumberArray});
 ```
 
 Note that the key for the adapter is the key on the model object, not on the response. And adapters are added for a property, not a type. If the above example had multiple properties that were colors, you would have to set an adapter block for each property. It would be smart to reuse adapter blocks in your code.
