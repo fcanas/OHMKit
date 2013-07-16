@@ -39,33 +39,37 @@ const int _kOMClassAdapterDictionaryKey;
     // Adapter
     NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
     OMValueAdapterBlock adapterForKey = adapters[key];
+    BOOL adapterUsed = NO;
     if (adapterForKey) {
         value = adapterForKey(value);
+        adapterUsed = YES;
     }
     
-    // Recursive Mapping
-    objc_property_t p = class_getProperty([self class], [key UTF8String]);
-    uint propertyCount = 0;
-    objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
-    
-    for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
-        objc_property_attribute_t property = properties[propertyIndex];
-        if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
-            const char *name = property.value;
-            Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
-            if (class_conformsToProtocol(propertyClass, @protocol(OMMappable))) {
-                if ([value isKindOfClass:[NSDictionary class]]) {
-                    id p = [[propertyClass alloc] init];
-                    [p setValuesForKeysWithDictionary:value];
-                    [self OM_setValue:p forKey:key];
-                    free(properties);
-                    return;
+    if (!adapterUsed) {
+        // Recursive Mapping
+        objc_property_t p = class_getProperty([self class], [key UTF8String]);
+        uint propertyCount = 0;
+        objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
+        
+        for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
+            objc_property_attribute_t property = properties[propertyIndex];
+            if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
+                const char *name = property.value;
+                Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
+                if (class_conformsToProtocol(propertyClass, @protocol(OMMappable))) {
+                    if ([value isKindOfClass:[NSDictionary class]]) {
+                        id p = [[propertyClass alloc] init];
+                        [p setValuesForKeysWithDictionary:value];
+                        [self OM_setValue:p forKey:key];
+                        free(properties);
+                        return;
+                    }
                 }
+                break;
             }
-            break;
         }
+        free(properties);
     }
-    free(properties);
     
     // No recursive mapping needed. Proceed as usual
     [self OM_setValue:value forKey:key];
