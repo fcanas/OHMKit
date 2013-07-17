@@ -1,6 +1,6 @@
-# ObjectMapping
+# OHMKit
 
-Map service responses to objects.
+Impedance matching between services and model objects.
 
 This project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a web service. It makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
 
@@ -10,18 +10,21 @@ This project doesn't know about networks. Use [AFNetworking](https://github.com/
 
 This project doesn't know about routes. Use [SOCKit](https://github.com/jverkoey/sockit).
 
+This project doesn't know about CoreData. It will not manage graphs of entities for you quite like RestKit does. But it *is* built on KVO, and does not care about your model objects' super class. So you can safely make subclasses of `NSManagedObject` mappable.
+
 ## Usage
 
 ### Basic Mapping
 
 Given a model
 
-	@interface MYModel : NSObject
-	@property (nonatomic, strong) NSString *name;
-	@property (nonatomic, strong) NSString *favoriteWord;
-	@property (nonatomic, assign) NSInteger favoriteNumber;
-	@property (nonatomic, assign) MYModel *favoriteModel;
-	@end
+```
+@interface MYModel : NSObject
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *favoriteWord;
+@property (nonatomic, assign) NSInteger favoriteNumber;
+@end
+```
 
 Anywhere in you application, make the model mappable, and pass it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
@@ -50,25 +53,32 @@ MYModel *testModel = [[MYModel alloc] init];
 
 ### Recursive Mapping
 
-You don't have to do anything special to get recursive mapping of mappable objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it.
+You don't have to do anything special to get recursive mapping of mappable objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it. (If that didn't make sense, just read the next code snippet)
 
 ```
+@interface MYModel : NSObject
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *favoriteWord;
+@property (nonatomic, assign) NSInteger favoriteNumber;
+@property (nonatomic, assign) MYModel *favoriteModel;
+@end
+
 OMMakeMappableWithDictionary([MYModel class], @{@"favorite_word"  : @"favoriteWord", 
                                                 @"favorite_number": @"favoriteNumber", 
                                                 @"favorite_model" : @"favoriteModel"});
 
 MYModel *testModel = [[MYModel alloc] init];
 
-NSDictionary *innerModel = @{@"name"           : @"Music", 
-                             @"favorite_word"  : @"glitter", 
-                             @"favorite_number": @7};
+NSDictionary *innerResponse = @{@"name"           : @"Music", 
+                                @"favorite_word"  : @"glitter", 
+                                @"favorite_number": @7};
                              
-NSDictionary *outerModel = @{@"name"           : @"Fabian", 
-                             @"favorite_word"  : @"absurd", 
-                             @"favorite_number": @2, 
-                             @"favorite_model" : innerModel};
+NSDictionary *outerResponse = @{@"name"           : @"Fabian", 
+                                @"favorite_word"  : @"absurd", 
+                                @"favorite_number": @2, 
+                                @"favorite_model" : innerResponse};
 
-[testModel setValuesForKeysWithDictionary:outerModel];
+[testModel setValuesForKeysWithDictionary:outerResponse];
 ```
 
 Now, `testModel.favoriteModel` is an instance of MYModel hydrated with the innerModel dictionary.
