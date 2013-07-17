@@ -25,6 +25,7 @@
 
 #import <XCTest/XCTest.h>
 #import <UIKit/UIKit.h>
+
 #import "ObjectMapping.h"
 #import "OMTBasicModel.h"
 
@@ -38,9 +39,9 @@
 {
     [super setUp];
     
-    OMMakeMappable([OMTBasicModel class]);
-    OMSetMapping([OMTBasicModel class], nil);
-    OMSetAdapter([OMTBasicModel class], nil);
+    OHMMappable([OMTBasicModel class]);
+    OHMSetMapping([OMTBasicModel class], nil);
+    OHMSetAdapter([OMTBasicModel class], nil);
 }
 
 - (void)tearDown
@@ -52,7 +53,7 @@
 
 - (void)testProtocolConformation
 {
-    XCTAssertTrue([OMTBasicModel conformsToProtocol:@protocol(OMMappable)], @"OMTBasicModel class has been made mappable, but doesn't conform to the mappable protocol.");
+    XCTAssertTrue([OMTBasicModel conformsToProtocol:@protocol(OHMMappable)], @"OMTBasicModel class has been made mappable, but doesn't conform to the mappable protocol.");
 }
 
 - (void)testDroppingUnknownKeys
@@ -81,7 +82,7 @@
 
 - (void)testHydrationWithGarbageMappingDictionry
 {
-    OMSetMapping([OMTBasicModel class], @{@"non_existent_key" : @"another_bad_key"});
+    OHMSetMapping([OMTBasicModel class], @{@"non_existent_key" : @"another_bad_key"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
                                                  @"favoriteWord": @"absurd",
@@ -94,7 +95,7 @@
 
 - (void)testHydrationWithIdentityMappingDictionry
 {
-    OMSetMapping([OMTBasicModel class], @{@"name" : @"name",
+    OHMSetMapping([OMTBasicModel class], @{@"name" : @"name",
                                           @"favoriteWord" : @"favoriteWord",
                                           @"favoriteNumber" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
@@ -109,7 +110,7 @@
 
 - (void)testHydrationWithUsefulMappingDictionry
 {
-    OMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
                                           @"favorite_number" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
@@ -123,7 +124,7 @@
 
 - (void)testRemovalOfMappingDictionary
 {
-    OMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
                                           @"favorite_number" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
@@ -134,7 +135,7 @@
     XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/ a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/ a mapping dictionary");
     
-    OMSetMapping([OMTBasicModel class], nil);
+    OHMSetMapping([OMTBasicModel class], nil);
     
     basicModel = [[OMTBasicModel alloc] init];
     basicModel.favoriteNumber = 0;
@@ -154,13 +155,13 @@
 
 - (void)testBasicValueAdapter
 {
-    OMValueAdapterBlock fourtySevenAdapter = ^(NSString *string){
+    OHMValueAdapterBlock fourtySevenAdapter = ^(NSString *string){
         if ([string isEqualToString:@"fourty-seven"]) {
             return @47;
         }
         return @0;
     };
-    OMSetAdapter([OMTBasicModel class], @{@"favoriteNumber" : fourtySevenAdapter});
+    OHMSetAdapter([OMTBasicModel class], @{@"favoriteNumber" : fourtySevenAdapter});
 
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
@@ -172,17 +173,17 @@
 
 - (void)testEverything
 {
-    OMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
                                           @"favorite_number" : @"favoriteNumber",
                                           @"favorite_model" : @"favoriteModel",
                                           @"favorite_color" : @"favoriteColor"});
-    OMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
+    OHMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
         return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
                                green:[numberArray[1] integerValue]/255.0
                                 blue:[numberArray[2] integerValue]/255.0
                                alpha:1];
     };
-    OMSetAdapter([OMTBasicModel class], @{@"favoriteColor": colorFromNumberArray});
+    OHMSetAdapter([OMTBasicModel class], @{@"favoriteColor": colorFromNumberArray});
     
     OMTBasicModel *testModel = [[OMTBasicModel alloc] init];
     

@@ -34,11 +34,11 @@ const int _kOMClassAdapterDictionaryKey;
 
 @implementation NSObject (OMMappingSwizzleBase)
 
-- (void)OM_setValue:(id)value forKey:(NSString *)key
+- (void)ohm_setValue:(id)value forKey:(NSString *)key
 {
     // Adapter
     NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
-    OMValueAdapterBlock adapterForKey = adapters[key];
+    OHMValueAdapterBlock adapterForKey = adapters[key];
     BOOL adapterUsed = NO;
     if (adapterForKey) {
         value = adapterForKey(value);
@@ -56,11 +56,11 @@ const int _kOMClassAdapterDictionaryKey;
             if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
                 const char *name = property.value;
                 Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
-                if (class_conformsToProtocol(propertyClass, @protocol(OMMappable))) {
+                if (class_conformsToProtocol(propertyClass, @protocol(OHMMappable))) {
                     if ([value isKindOfClass:[NSDictionary class]]) {
                         id p = [[propertyClass alloc] init];
                         [p setValuesForKeysWithDictionary:value];
-                        [self OM_setValue:p forKey:key];
+                        [self ohm_setValue:p forKey:key];
                         free(properties);
                         return;
                     }
@@ -72,24 +72,24 @@ const int _kOMClassAdapterDictionaryKey;
     }
     
     // No recursive mapping needed. Proceed as usual
-    [self OM_setValue:value forKey:key];
+    [self ohm_setValue:value forKey:key];
 }
 
 @end
 
 #pragma mark - OMMappable methods
 
-void _OMSetMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
+void ohm_setMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
-    OMSetMapping(self, dictionary);
+    OHMSetMapping(self, dictionary);
 }
 
-void _OMSetAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
+void ohm_setAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
-    OMSetAdapter(self, dictionary);
+    OHMSetAdapter(self, dictionary);
 }
 
-void _OMSetValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
+void ohm_setValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
 {
     NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
     
@@ -101,40 +101,34 @@ void _OMSetValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
 
 #pragma mark - Public Functions
 
-void OMSetMapping(Class c, NSDictionary *mappingDictionary)
+void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
 {
     objc_setAssociatedObject(c, &_kOMClassMappingDictionaryKey, mappingDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-void OMSetAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 {
     objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-void OMMakeMappable(Class c)
+void OHMMappable(Class c)
 {
     // Get the meta class
     const char *class_name = class_getName(c);
     Class meta_class = objc_getMetaClass(class_name);
     
     // Override Class method to set mapping dictionary
-    struct objc_method_description m = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetMappingDictionary:), YES, NO);
-    struct objc_method_description a = protocol_getMethodDescription(@protocol(OMMappable), @selector(_OMSetAdapterDictionary:), YES, NO);
+    struct objc_method_description m = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
+    struct objc_method_description a = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
     
-    class_addProtocol(c, @protocol(OMMappable));
-    class_addMethod(meta_class, @selector(_OMSetMappingDictionary:), (IMP)_OMSetMappingDictionary_Class_IMP, m.types);
-    class_addMethod(meta_class, @selector(_OMSetAdapterDictionary:), (IMP)_OMSetAdapterDictionary_Class_IMP, a.types);
+    class_addProtocol(c, @protocol(OHMMappable));
+    class_addMethod(meta_class, @selector(ohm_setMapping:), (IMP)ohm_setMappingDictionary_Class_IMP, m.types);
+    class_addMethod(meta_class, @selector(ohm_setAdapter:), (IMP)ohm_setAdapterDictionary_Class_IMP, a.types);
     
-    class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)_OMSetValueForUndefinedKey_IMP, "@@");
+    class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)ohm_setValueForUndefinedKey_IMP, "@@");
     
     Method svfk = class_getInstanceMethod(c, @selector(setValue:forKey:));
-    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(OM_setValue:forKey:));
+    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
     method_exchangeImplementations(svfk, svfk_om);
-}
-
-void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary)
-{
-    OMMakeMappable(c);
-    OMSetMapping(c, mappingDictionary);
 }
 

@@ -26,14 +26,14 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OMMappable
-+ (void)_OMSetMappingDictionary:(NSDictionary *)dictionary;
-+ (void)_OMSetAdapterDictionary:(NSDictionary *)dictionary;
+@protocol OHMMappable
++ (void)ohm_setMapping:(NSDictionary *)dictionary;
++ (void)ohm_setAdapter:(NSDictionary *)dictionary;
++ (void)ohm_setMapping:(NSDictionary *)dictionary andAdapter:(NSDictionary *)dictionary;
 @end
 
-typedef id(^OMValueAdapterBlock)(id);
+typedef id(^OHMValueAdapterBlock)(id);
 
-extern void OMMakeMappable(Class c);
-extern void OMSetMapping(Class c, NSDictionary *mappingDictionary);
-extern void OMSetAdapter(Class c, NSDictionary *adapterDictionary);
-void OMMakeMappableWithDictionary(Class c, NSDictionary *mappingDictionary);
+extern void OHMMappable(Class c);
+extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
