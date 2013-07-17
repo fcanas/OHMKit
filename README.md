@@ -26,14 +26,7 @@ Given a model
 @end
 ```
 
-Anywhere in you application, make the model mappable, and pass it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
-
-```
-OHMMappable([MYModel class], @{@"favorite_word"  : @"favoriteWord",
-                               @"favorite_number": @"favoriteNumber"});
-```
-
-This can also be done in separate steps, and the mapping dictionary can be reset at any time:
+Anywhere in you application, make the model mappable, and assign it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
 ```
 OHMMappable([MYModel class]);
@@ -69,7 +62,8 @@ You don't have to do anything special to get recursive mapping of mappable objec
 
 OHMMappable([MYClass class]);
 
-OHMMappable([MYClass2 class], @{@"favorite_word"  : @"favoriteWord", 
+OHMMappable([MYClass2 class])
+OHMSetMapping([MYClass2 class], @{@"favorite_word"  : @"favoriteWord", 
                                @"favorite_number": @"favoriteNumber", 
                                @"favorite_object" : @"favoriteObject"});
 
@@ -93,11 +87,17 @@ Users can pass a dictionary of blocks for field requiring special handling. Say 
 
 ```
 {
-    "color": [
+    "favorite_color": [
         122,
         50,
         80
+    ],
+    "least_favorite_color": [
+        121,
+        51,
+        81
     ]
+
 }
 ```
 
@@ -105,7 +105,8 @@ and we expect to map it to a model like this
 
 ```
 @interface MYModel : NSObject
-@property (nonatomic, strong) UIColor *color;
+@property (nonatomic, strong) UIColor *favoriteColor;
+@property (nonatomic, strong) UIColor *leastFavoriteColor;
 @end
 ```
 
@@ -113,13 +114,14 @@ You can adapt the response with an adapter block:
 
 ```	
 OHMMappable([MYModel class]);
+OHMSetMapping([MYModel class], @"least_favorite_color" : @"leastFavoriteColor", @"favorite_color" : @"favoriteColor")
 OHMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
-    return [NSColor colorWithRed:[numberArray[0] integerValue]/255.0
+    return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
                            green:[numberArray[1] integerValue]/255.0
                             blue:[numberArray[2] integerValue]/255.0
                            alpha:1];
 };
-OHMSetAdapter([MYModel class], @{@"color": colorFromNumberArray});
+OHMSetAdapter([MYModel class], @{@"favoriteColor": colorFromNumberArray, @"leastFavoriteColor": colorFromNumberArray});
 ```
 
 Note that the key for the adapter is the key on the model object, not on the response. And adapters are added for a property, not a type. If the above example had multiple properties that were colors, you would have to set an adapter block for each property. It would be smart to reuse adapter blocks in your code.
