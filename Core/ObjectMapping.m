@@ -30,54 +30,71 @@
 const int _kOMClassMappingDictionaryKey;
 const int _kOMClassAdapterDictionaryKey;
 
+bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
+
 #pragma mark - The Mixin
 
 @implementation NSObject (OMMappingSwizzleBase)
 
++ (void)load {
+    Method svfk = class_getInstanceMethod([NSObject class], @selector(setValue:forKey:));
+    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
+    method_exchangeImplementations(svfk, svfk_om);
+}
+
 - (void)ohm_setValue:(id)value forKey:(NSString *)key
 {
-    // Adapter
-    NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
-    OHMValueAdapterBlock adapterForKey = adapters[key];
-    BOOL adapterUsed = NO;
-    if (adapterForKey) {
-        value = adapterForKey(value);
-        adapterUsed = YES;
-    }
-    
-    if (!adapterUsed) {
-        // Recursive Mapping
-        objc_property_t p = class_getProperty([self class], [key UTF8String]);
-        uint propertyCount = 0;
-        objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
-        
-        for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
-            objc_property_attribute_t property = properties[propertyIndex];
-            if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
-                const char *name = property.value;
-                Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
-                if (class_conformsToProtocol(propertyClass, @protocol(OHMMappable))) {
-                    if ([value isKindOfClass:[NSDictionary class]]) {
-                        id p = [[propertyClass alloc] init];
-                        [p setValuesForKeysWithDictionary:value];
-                        [self ohm_setValue:p forKey:key];
-                        free(properties);
-                        return;
-                    }
-                }
-                break;
-            }
-        }
-        free(properties);
+    bool proceed = true;
+    if ([self conformsToProtocol:@protocol(OHMMappable)]) {
+        proceed = ohm_setValueForKey_f(self, _cmd, value, key);
     }
     
     // No recursive mapping needed. Proceed as usual
-    [self ohm_setValue:value forKey:key];
+    if (proceed) {
+        [self ohm_setValue:value forKey:key];
+    }
 }
 
 @end
 
 #pragma mark - OMMappable methods
+
+bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
+{
+    // Adapter
+    NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+    OHMValueAdapterBlock adapterForKey = adapters[key];
+    if (adapterForKey) {
+        value = adapterForKey(value);
+        [self ohm_setValue:value forKey:key];
+        return false;
+    }
+    
+    // Recursive Mapping
+    objc_property_t p = class_getProperty([self class], [key UTF8String]);
+    uint propertyCount = 0;
+    objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
+    
+    for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
+        objc_property_attribute_t property = properties[propertyIndex];
+        if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
+            const char *name = property.value;
+            Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
+            if (class_conformsToProtocol(propertyClass, @protocol(OHMMappable))) {
+                if ([value isKindOfClass:[NSDictionary class]]) {
+                    id p = [[propertyClass alloc] init];
+                    [p setValuesForKeysWithDictionary:value];
+                    [self ohm_setValue:p forKey:key];
+                    free(properties);
+                    return false;
+                }
+            }
+            break;
+        }
+    }
+    free(properties);
+    return true;
+}
 
 void ohm_setMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
@@ -113,6 +130,10 @@ void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 
 void OHMMappable(Class c)
 {
+//    if (class_conformsToProtocol(c, @protocol(OHMMappable))){
+//        return;
+//    }
+    
     // Get the meta class
     const char *class_name = class_getName(c);
     Class meta_class = objc_getMetaClass(class_name);
@@ -127,8 +148,5 @@ void OHMMappable(Class c)
     
     class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)ohm_setValueForUndefinedKey_IMP, "@@");
     
-    Method svfk = class_getInstanceMethod(c, @selector(setValue:forKey:));
-    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
-    method_exchangeImplementations(svfk, svfk_om);
 }
 

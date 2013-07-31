@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E762C27417A8C00E00441FAD /* ObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF668517938AEE000EE96C /* ObjectMapping.m */; };
+		E762C27517A8C1A700441FAD /* HierarchicalModelsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */; };
+		E762C27617A8C1AA00441FAD /* OMTHierarchyHierarchicalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E78A9EAE17A8928700093863 /* OMTHierarchyHierarchicalModel.m */; };
 		E7AF665E17938AD0000EE96C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665D17938AD0000EE96C /* Foundation.framework */; };
 		E7AF666C17938AD0000EE96C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF666B17938AD0000EE96C /* XCTest.framework */; };
 		E7AF666D17938AD0000EE96C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665D17938AD0000EE96C /* Foundation.framework */; };
@@ -14,7 +17,6 @@
 		E7AF667217938AD0000EE96C /* libObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665A17938AD0000EE96C /* libObjectMapping.a */; };
 		E7AF667817938AD0000EE96C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7AF667617938AD0000EE96C /* InfoPlist.strings */; };
 		E7AF667A17938AD0000EE96C /* ObjectMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF667917938AD0000EE96C /* ObjectMappingTests.m */; };
-		E7AF668617938AEE000EE96C /* ObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF668517938AEE000EE96C /* ObjectMapping.m */; };
 		E7AF668917938B31000EE96C /* OMTBasicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF668817938B31000EE96C /* OMTBasicModel.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +43,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E78A9EAD17A8928700093863 /* OMTHierarchyHierarchicalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OMTHierarchyHierarchicalModel.h; sourceTree = "<group>"; };
+		E78A9EAE17A8928700093863 /* OMTHierarchyHierarchicalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTHierarchyHierarchicalModel.m; sourceTree = "<group>"; };
+		E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierarchicalModelsTests.m; sourceTree = "<group>"; };
 		E7AF665A17938AD0000EE96C /* libObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectMapping.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AF665D17938AD0000EE96C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E7AF666117938AD0000EE96C /* ObjectMapping-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectMapping-Prefix.pch"; sourceTree = "<group>"; };
@@ -132,6 +137,9 @@
 				E7AF667417938AD0000EE96C /* Supporting Files */,
 				E7AF668717938B31000EE96C /* OMTBasicModel.h */,
 				E7AF668817938B31000EE96C /* OMTBasicModel.m */,
+				E78A9EAD17A8928700093863 /* OMTHierarchyHierarchicalModel.h */,
+				E78A9EAE17A8928700093863 /* OMTHierarchyHierarchicalModel.m */,
+				E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */,
 			);
 			path = ObjectMappingTests;
 			sourceTree = "<group>";
@@ -236,7 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7AF668617938AEE000EE96C /* ObjectMapping.m in Sources */,
+				E762C27417A8C00E00441FAD /* ObjectMapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +252,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E762C27517A8C1A700441FAD /* HierarchicalModelsTests.m in Sources */,
+				E762C27617A8C1AA00441FAD /* OMTHierarchyHierarchicalModel.m in Sources */,
 				E7AF667A17938AD0000EE96C /* ObjectMappingTests.m in Sources */,
 				E7AF668917938B31000EE96C /* OMTBasicModel.m in Sources */,
 			);

@@ -38,8 +38,7 @@
 - (void)setUp
 {
     [super setUp];
-    
-    OHMMappable([OMTBasicModel class]);
+    OHMMappable([OMTBasicModel class]);    
     OHMSetMapping([OMTBasicModel class], nil);
     OHMSetAdapter([OMTBasicModel class], nil);
 }
@@ -76,6 +75,14 @@
     XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
     XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+}
+
+#pragma mark - Protocol Conformance
+
+- (void)testProtocolConformance
+{
+    OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
+    XCTAssertTrue([basicModel conformsToProtocol:@protocol(OHMMappable)], @"A basic model made mappable should conform to the mappable protocol");
 }
 
 #pragma mark - Mapping Dictionary
@@ -161,11 +168,27 @@
         }
         return @0;
     };
-    OHMSetAdapter([OMTBasicModel class], @{@"favoriteNumber" : fourtySevenAdapter});
+    OHMSetAdapter([OMTBasicModel class], @{@"favoriteNumber" : [fourtySevenAdapter copy]});
 
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
 
+    XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+}
+
+- (void)testValueAdapterMethod
+{
+    OHMValueAdapterBlock fourtySevenAdapter = ^(NSString *string){
+        if ([string isEqualToString:@"fourty-seven"]) {
+            return @47;
+        }
+        return @0;
+    };
+    [((id<OHMMappable>)[OMTBasicModel class]) ohm_setAdapter:@{@"favoriteNumber" : fourtySevenAdapter}];
+    
+    OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
+    [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
+    
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
