@@ -2,7 +2,7 @@
 
 Impedance matching between services and model objects.
 
-This project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a web service. It makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
+OHMKit project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a web service. It makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
 
 It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
