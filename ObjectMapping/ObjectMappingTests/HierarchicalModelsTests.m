@@ -9,23 +9,6 @@
 #import <XCTest/XCTest.h>
 #import "ObjectMapping.h"
 #import "OMTHierarchyHierarchicalModel.h"
-/*
-    @interface OMTHierarchyRootModel : NSObject
-    @property (nonatomic, strong) NSString *rootProperty;
-    @end
-
-    @interface OMTHierarchyChildModel : NSObject
-    @property (nonatomic, strong) NSString *childProperty;
-    @end
-
-    @interface OMTHierarchyUnmappedRootModel : NSObject
-    @property (nonatomic, strong) NSString *rootUnmappedProperty;
-    @end
-
-    @interface OMTHierarchyChildWithUnmappedRootModel : NSObject
-    @property (nonatomic, strong) NSString *childMappedProperty;
-    @end
- */
 
 @interface HierarchicalModelsTests : XCTestCase
 
@@ -36,19 +19,30 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
 - (void)testMappedRootHierarchy
 {
-//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
     OHMMappable([OMTHierarchyRootModel class]);
+    OHMMappable([OMTHierarchyChildModel class]);
+    OMTHierarchyChildModel *model = [OMTHierarchyChildModel new];
+    [model setValuesForKeysWithDictionary:@{@"rootProperty":@"r",@"childProperty":@"c"}];
+    XCTAssertEqualObjects(model.rootProperty, @"r", @"A mapped root hierarchy property should be mapped by a mappable child");
+    XCTAssertEqualObjects(model.childProperty, @"c", @"A mapped child hierarchy property should be mapped with a mappable root");
+}
+
+- (void)testUnmappedRootHierarchy
+{
+    OHMMappable([OMTHierarchyChildWithUnmappedRootModel class]);
+    OMTHierarchyChildWithUnmappedRootModel *model = [OMTHierarchyChildWithUnmappedRootModel new];
+    [model setValuesForKeysWithDictionary:@{@"rootUnmappedProperty":@"r",@"childMappedProperty":@"c"}];
+    XCTAssertEqualObjects(model.rootUnmappedProperty, @"r", @"An unmapped root hierarchy property should be mapped by a mappable child");
+    XCTAssertEqualObjects(model.childMappedProperty, @"c", @"A mapped child hierarchy property should be mapped with an unmapped root");
 }
 
 @end

@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSString *rootProperty;
 @end
 
-@interface OMTHierarchyChildModel : NSObject
+@interface OMTHierarchyChildModel : OMTHierarchyRootModel
 @property (nonatomic, strong) NSString *childProperty;
 @end
 
@@ -37,6 +37,6 @@
 @property (nonatomic, strong) NSString *rootUnmappedProperty;
 @end
 
-@interface OMTHierarchyChildWithUnmappedRootModel : NSObject
+@interface OMTHierarchyChildWithUnmappedRootModel : OMTHierarchyUnmappedRootModel
 @property (nonatomic, strong) NSString *childMappedProperty;
 @end
