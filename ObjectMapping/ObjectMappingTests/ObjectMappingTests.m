@@ -73,8 +73,8 @@
                                                  @"favoriteWord": @"absurd",
                                                  @"favoriteNumber" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
-    XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
@@ -88,8 +88,8 @@
                                                  @"favoriteWord": @"absurd",
                                                  @"favoriteNumber" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a relevant mapping");
-    XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a relevant mapping");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a relevant mapping");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a relevant mapping");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a relevant mapping");
 }
 
@@ -103,8 +103,8 @@
                                                  @"favoriteWord": @"absurd",
                                                  @"favoriteNumber" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
-    XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
@@ -117,8 +117,8 @@
                                                  @"favorite_word": @"absurd",
                                                  @"favorite_number" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
-    XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/ a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/ a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/ a mapping dictionary");
 }
 
@@ -131,8 +131,8 @@
                                                  @"favorite_word": @"absurd",
                                                  @"favorite_number" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
-    XCTAssertEquals(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/ a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"absurd", @"OTMBasicModel should have its word set with a correct key w/ a mapping dictionary");
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/ a mapping dictionary");
     
     OHMSetMapping([OMTBasicModel class], nil);
@@ -146,7 +146,7 @@
                                                  @"favorite_word": @"absurd",
                                                  @"favorite_number" : @47}];
     
-    XCTAssertEquals(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
+    XCTAssertEqualObjects(basicModel.name, @"Fabian", @"OTMBasicModel should have its name set with a correct key w/ a mapping dictionary");
     XCTAssertNil(basicModel.favoriteWord, @"OTMBasicModel should have a nil word when mapping has been cleared");
     XCTAssertTrue(basicModel.favoriteNumber==0, @"OTMBasicModel should not have its number set w/o a correct mapping dictionary");
 }
