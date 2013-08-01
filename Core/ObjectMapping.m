@@ -49,7 +49,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
         proceed = ohm_setValueForKey_f(self, _cmd, value, key);
     }
     
-    // No recursive mapping needed. Proceed as usual
+    // No recursive mapping. Proceed as usual
     if (proceed) {
         [self ohm_setValue:value forKey:key];
     }
@@ -130,23 +130,17 @@ void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 
 void OHMMappable(Class c)
 {
-//    if (class_conformsToProtocol(c, @protocol(OHMMappable))){
-//        return;
-//    }
-    
     // Get the meta class
     const char *class_name = class_getName(c);
     Class meta_class = objc_getMetaClass(class_name);
     
-    // Override Class method to set mapping dictionary
+    // Class method to set mapping dictionary and adapter dictionary
     struct objc_method_description m = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
-    struct objc_method_description a = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
+    struct objc_method_description a = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setAdapter:), YES, NO);
     
     class_addProtocol(c, @protocol(OHMMappable));
     class_addMethod(meta_class, @selector(ohm_setMapping:), (IMP)ohm_setMappingDictionary_Class_IMP, m.types);
     class_addMethod(meta_class, @selector(ohm_setAdapter:), (IMP)ohm_setAdapterDictionary_Class_IMP, a.types);
     
     class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)ohm_setValueForUndefinedKey_IMP, "@@");
-    
 }
-
