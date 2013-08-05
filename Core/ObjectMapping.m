@@ -61,6 +61,12 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
 {
+    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
+    NSString *newKey = mapping[key];
+    if (newKey) {
+        key = newKey;
+    }
+    
     // Adapter
     NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
     OHMValueAdapterBlock adapterForKey = adapters[key];
