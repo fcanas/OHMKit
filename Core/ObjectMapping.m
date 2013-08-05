@@ -118,6 +118,11 @@ void ohm_setValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
     
     NSString *newKey = mapping[key];
     if (newKey != nil) {
+        NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+        OHMValueAdapterBlock adapterForKey = adapters[newKey];
+        if (adapterForKey) {
+            value = adapterForKey(value);
+        }
         [self setValue:value forKey:newKey];
     }
 }
