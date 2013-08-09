@@ -37,9 +37,17 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 @implementation NSObject (OMMappingSwizzleBase)
 
 + (void)load {
-    Method svfk = class_getInstanceMethod([NSObject class], @selector(setValue:forKey:));
-    Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
-    method_exchangeImplementations(svfk, svfk_om);
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        Method svfk = class_getInstanceMethod([NSObject class], @selector(setValue:forKey:));
+        Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
+        method_exchangeImplementations(svfk, svfk_om);
+        
+        
+        Method svfuk = class_getInstanceMethod([NSObject class], @selector(setValue:forUndefinedKey:));
+        Method svfuk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forUndefinedKey:));
+        method_exchangeImplementations(svfuk, svfuk_om);
+    });
 }
 
 - (void)ohm_setValue:(id)value forKey:(NSString *)key
