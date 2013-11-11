@@ -144,3 +144,7 @@ Option 2 is currently the only behavior, and I'm inclined to leave is as the def
 ### NSCoding
 
 It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be (had you noticed?).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fcanas/ohmkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
