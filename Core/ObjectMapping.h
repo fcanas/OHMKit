@@ -29,7 +29,6 @@
 @protocol OHMMappable
 + (void)ohm_setMapping:(NSDictionary *)dictionary;
 + (void)ohm_setAdapter:(NSDictionary *)dictionary;
-+ (void)ohm_setMapping:(NSDictionary *)dictionary andAdapter:(NSDictionary *)dictionary;
 @end
 
 typedef id(^OHMValueAdapterBlock)(id);
