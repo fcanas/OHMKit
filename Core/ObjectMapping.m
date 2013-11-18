@@ -67,7 +67,11 @@ void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
 
 - (void)ohm_setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    ohm_setValueForUndefinedKey_f(self, _cmd, value, key);
+    if ([self conformsToProtocol:@protocol(OHMMappable)]) {
+        ohm_setValueForUndefinedKey_f(self, _cmd, value, key);
+    } else {
+        [self ohm_setValue:value forUndefinedKey:key];
+    }
 }
 
 @end

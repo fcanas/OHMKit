@@ -65,6 +65,11 @@
     XCTAssertNil(basicModel.favoriteWord, @"OMTBasicModel should have all nil properties");
 }
 
+- (void)testThrowingExceptionsFromNonMappableObjects
+{
+    XCTAssertThrowsSpecificNamed([[NSObject new] setValue:@2 forKey:@"a key that NSObject Doesn't have"], NSException, NSUndefinedKeyException, @"Classes that haven't been declared mappable should throw undefined key exception");
+}
+
 - (void)testHydrationWithoutMappingDictionary
 {
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
