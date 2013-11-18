@@ -31,6 +31,7 @@ const int _kOMClassMappingDictionaryKey;
 const int _kOMClassAdapterDictionaryKey;
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
+void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
 
 #pragma mark - The Mixin
 
@@ -61,6 +62,11 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
     if (proceed) {
         [self ohm_setValue:value forKey:key];
     }
+}
+
+- (void)ohm_setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    ohm_setValueForUndefinedKey_f(self, _cmd, value, key);
 }
 
 @end
@@ -120,7 +126,7 @@ void ohm_setAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetAdapter(self, dictionary);
 }
 
-void ohm_setValueForUndefinedKey_IMP(id self, SEL _cmd, id value, NSString *key)
+void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
 {
     NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
     
@@ -160,6 +166,4 @@ void OHMMappable(Class c)
     class_addProtocol(c, @protocol(OHMMappable));
     class_addMethod(meta_class, @selector(ohm_setMapping:), (IMP)ohm_setMappingDictionary_Class_IMP, m.types);
     class_addMethod(meta_class, @selector(ohm_setAdapter:), (IMP)ohm_setAdapterDictionary_Class_IMP, a.types);
-    
-    class_replaceMethod(c, @selector(setValue:forUndefinedKey:), (IMP)ohm_setValueForUndefinedKey_IMP, "@@");
 }
