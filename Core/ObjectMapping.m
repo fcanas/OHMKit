@@ -29,6 +29,7 @@
 
 const int _kOMClassMappingDictionaryKey;
 const int _kOMClassAdapterDictionaryKey;
+const int _kOMClassArrayDictionaryKey;
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
@@ -89,6 +90,26 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
         [self ohm_setValue:value forKey:key];
         return false;
     }
+    
+    // Array Mapping
+    if ([value isKindOfClass:[NSArray class]]) {
+        NSArray *v = value;
+        NSDictionary *arrays = objc_getAssociatedObject([self class], &_kOMClassArrayDictionaryKey);
+        if (arrays) {
+            Class arrayClass = arrays[key];
+            if (arrayClass) {
+                NSMutableArray *r = [NSMutableArray arrayWithCapacity:v.count];
+                for (NSDictionary *d in v) {
+                    id ai = [[arrayClass alloc] init];
+                    [ai setValuesForKeysWithDictionary:d];
+                    [r addObject:ai];
+                }
+                [self ohm_setValue:r forKey:key];
+                return false;
+            }
+        }
+    }
+    
     
     // Recursive Mapping
     objc_property_t p = class_getProperty([self class], [key UTF8String]);
@@ -151,6 +172,11 @@ void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
 void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 {
     objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
+{
+    objc_setAssociatedObject(c, &_kOMClassArrayDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 void OHMMappable(Class c)

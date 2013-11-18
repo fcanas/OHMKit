@@ -36,3 +36,4 @@ typedef id(^OHMValueAdapterBlock)(id);
 extern void OHMMappable(Class c);
 extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
+extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
