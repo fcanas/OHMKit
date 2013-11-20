@@ -85,6 +85,8 @@ Internally, the new model object is initialized with `[[ alloc] init]`, and then
 
 Arrays of dictionaries can be mapped to a class as well.
 
+(This array feature is not included in the `0.0.5` release. It is present at the head of the master branch.)
+
 ```
 @interface Person : NSObject
 @property (nonatomic, copy) NSString *name;
