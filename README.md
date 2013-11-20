@@ -64,8 +64,8 @@ OHMMappable([MYClass class]);
 
 OHMMappable([MYClass2 class])
 OHMSetMapping([MYClass2 class], @{@"favorite_word"  : @"favoriteWord", 
-                               @"favorite_number": @"favoriteNumber", 
-                               @"favorite_object" : @"favoriteObject"});
+                                @"favorite_number": @"favoriteNumber", 
+                                @"favorite_object" : @"favoriteObject"});
 
 MYModel *testModel = [[MYClass2 alloc] init];
                              
@@ -80,6 +80,32 @@ NSDictionary *class2Response = @{@"name"           : @"Fabian",
 Now, `testModel.favoriteObject` is an instance of `MYClass` hydrated with "Rock" as its name.
 
 Internally, the new model object is initialized with `[[ alloc] init]`, and then hydrated with `[ setValuesForKeysWithDictionary:dictionary]`. If you have a model that needs special consideration for initialization, use an adapter block.
+
+### Arrays
+
+Arrays of dictionaries can be mapped to a class as well.
+
+```
+@interface Person : NSObject
+@property (nonatomic, copy) NSString *name;
+@end
+
+@interface Roster : NSObject
+@property (nonatomic, strong) NSArray *people;
+@end
+
+
+
+OHMMappable([Person class]);
+OHMSetArrayClasses([Roster class], @{@"people":[Person class]});
+
+NSDictionary *response = @{@[@{@"name":@"Bert"},
+                             @{@"name":@"Ernie"},
+                             @{@"name":@"Count"}];
+
+Roster *roster = [Roster new];
+[roster setValuesForKeysWithDictionary:response];
+```
 
 ### Adapter Blocks to handle special properties
 
