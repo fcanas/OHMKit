@@ -96,8 +96,6 @@ Arrays of dictionaries can be mapped to a class as well.
 @property (nonatomic, strong) NSArray *people;
 @end
 
-
-
 OHMMappable([Person class]);
 OHMSetArrayClasses([Roster class], @{@"people":[Person class]});
 
@@ -125,7 +123,6 @@ Users can pass a dictionary of blocks for field requiring special handling. Say 
         51,
         81
     ]
-
 }
 ```
 
