@@ -1,6 +1,8 @@
 # OHMKit
 
-Impedance matching between services and model objects.
+### Impedance matching between services and model objects.
+
+[![Build Status](https://travis-ci.org/fcanas/OHMKit.png?branch=master)](https://travis-ci.org/fcanas/OHMKit)
 
 Map `user_name` from your web service to `userName` in your Objective-C models. Or hydrate a whole hierarchical JSON response into a tree of objects with a single line of code.
 
@@ -166,6 +168,12 @@ Use [CocoaPods](http://www.cocoapods.org), add OHMKit to your `PodFile`, and run
 pod 'OHMKit'
 ```
 
+## Contributing
+
+Bug fixes, pull requests, enhancement requests and feedback are welcome. 
+
+If you plan on contributing code, please notice that OHMKit has tests. If you're fixing a bug, please also include a test that exposes the bug and therefore guards against a regression.
+
 ## TODO
 
 ### Undefined Keys
@@ -182,6 +190,5 @@ Option 2 is currently the only behavior, and I'm inclined to leave is as the def
 
 It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be (had you noticed?).
 
-[![Build Status](https://travis-ci.org/fcanas/OHMKit.png?branch=master)](https://travis-ci.org/fcanas/OHMKit)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fcanas/ohmkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
