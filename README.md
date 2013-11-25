@@ -2,7 +2,11 @@
 
 Impedance matching between services and model objects.
 
-OHMKit project is a [mixin](http://en.wikipedia.org/wiki/Mixin) to make any Objective-C class easier to hydrate from a dictionary representation, such as you might get from a web service. It makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place.
+Map `user_name` from your web service to `userName` in your Objective-C models. Or hydrate a whole hierarchical JSON response into a tree of objects with a single line of code.
+
+## Why?
+
+OHMKit project makes Objective-C class easier to hydrate from web services. It is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
 
 It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
@@ -153,6 +157,14 @@ Note that the key for the adapter is the key on the model object, not on the res
 
 The `OHMValueAdapterBlock` type is a block that takes an `id` and returns an `id`. *i.e* `typedef id(^OHMValueAdapterBlock)(id);`
 
+
+## Using it in a project
+
+Use [CocoaPods](http://www.cocoapods.org), add OHMKit to your `PodFile`, and run `$ pod install`
+
+```
+pod 'OHMKit'
+```
 
 ## TODO
 
