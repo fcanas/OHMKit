@@ -151,6 +151,11 @@ void ohm_setAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetAdapter(self, dictionary);
 }
 
+void ohm_setArrayClasses_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
+{
+    OHMSetArrayClasses(self, dictionary);
+}
+
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
 {
     NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
@@ -192,8 +197,10 @@ void OHMMappable(Class c)
     // Class method to set mapping dictionary and adapter dictionary
     struct objc_method_description m = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
     struct objc_method_description a = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setAdapter:), YES, NO);
+    struct objc_method_description r = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setArrayClasses:), YES, NO);
     
     class_addProtocol(c, @protocol(OHMMappable));
     class_addMethod(meta_class, @selector(ohm_setMapping:), (IMP)ohm_setMappingDictionary_Class_IMP, m.types);
     class_addMethod(meta_class, @selector(ohm_setAdapter:), (IMP)ohm_setAdapterDictionary_Class_IMP, a.types);
+    class_addMethod(meta_class, @selector(ohm_setArrayClasses:), (IMP)ohm_setArrayClasses_Class_IMP, r.types);
 }
