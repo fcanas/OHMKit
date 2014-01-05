@@ -8,7 +8,7 @@ Map `user_name` from your web service to `userName` in your Objective-C models. 
 
 ## Why?
 
-OHMKit project makes Objective-C class easier to hydrate from web services. It is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
+OHMKit makes it easy to hydrate Objective-C model objects from web services. 
 
 It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
@@ -17,6 +17,12 @@ This project doesn't know about networks. Use [AFNetworking](https://github.com/
 This project doesn't know about routes. Use [SOCKit](https://github.com/jverkoey/sockit).
 
 This project doesn't know about CoreData. It will not manage graphs of entities for you quite like RestKit does. But it *is* built on KVO, and does not care about your model objects' super class. So you can safely make subclasses of `NSManagedObject` mappable.
+
+## How?
+
+It is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
+
+It leverages the existing power of [KVO](https://developer.apple.com/library/mac/documentation/cocoa/conceptual/KeyValueObserving/KeyValueObserving.html) and in particular `-setValue:forKey:`, `-setValue:forUndefinedKey:`. OHMKit comes in at under 200 lines of code. If you want to see how it works, read the source or drop me a line.
 
 ## Usage
 
@@ -190,5 +196,30 @@ Option 2 is currently the only behavior, and I'm inclined to leave is as the def
 
 It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be (had you noticed?).
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fcanas/ohmkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+# License
 
+```
+Copyright (c) 2013-2014 Fabian Canas. All rights reserved.
+
+This code is distributed under the terms and conditions of the MIT license.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fcanas/ohmkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
