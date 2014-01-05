@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/fcanas/OHMKit.png?branch=master)](https://travis-ci.org/fcanas/OHMKit)
 
-Map `user_name` from your web service to `userName` in your Objective-C models. Or hydrate a whole hierarchical JSON response into a tree of objects with a single line of code.
+Map `user_name` from your web service to `userName` in your Objective-C models. Or hydrate a whole hierarchical JSON response, including arrays of objects, into a tree of objects with a single line of code.
 
 ## Why?
 
