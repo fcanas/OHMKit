@@ -30,6 +30,7 @@
 const int _kOMClassMappingDictionaryKey;
 const int _kOMClassAdapterDictionaryKey;
 const int _kOMClassArrayDictionaryKey;
+const int _kOMClassDictionaryDictionaryKey;
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
@@ -104,9 +105,9 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
             if (arrayClass) {
                 NSMutableArray *r = [NSMutableArray arrayWithCapacity:v.count];
                 for (NSDictionary *d in v) {
-                    id ai = [[arrayClass alloc] init];
-                    [ai setValuesForKeysWithDictionary:d];
-                    [r addObject:ai];
+                    id leafInstance = [[arrayClass alloc] init];
+                    [leafInstance setValuesForKeysWithDictionary:d];
+                    [r addObject:leafInstance];
                 }
                 [self ohm_setValue:r forKey:key];
                 return false;
@@ -114,6 +115,20 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
         }
     }
     
+    // Dictionary Mapping
+    NSDictionary *dictionaries = objc_getAssociatedObject([self class], &_kOMClassDictionaryDictionaryKey);
+    if ([value isKindOfClass:[NSDictionary class]] && dictionaries[key]!=nil) {
+        NSDictionary *v = value;
+        Class leafClass = dictionaries[key];
+        NSMutableDictionary *dd = [NSMutableDictionary dictionaryWithCapacity:v.count];
+        [v enumerateKeysAndObjectsUsingBlock:^(id innerKey, NSDictionary *d, BOOL *stop) {
+            id leafInstance = [[leafClass alloc] init];
+            [leafInstance setValuesForKeysWithDictionary:d];
+            [dd setValue:leafInstance forKey:innerKey];
+        }];
+        [self ohm_setValue:dd forKey:key];
+        return false;
+    }
     
     // Recursive Mapping
     objc_property_t p = class_getProperty([self class], [key UTF8String]);
@@ -186,6 +201,11 @@ void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
 {
     objc_setAssociatedObject(c, &_kOMClassArrayDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary)
+{
+    objc_setAssociatedObject(c, &_kOMClassDictionaryDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 void OHMMappable(Class c)

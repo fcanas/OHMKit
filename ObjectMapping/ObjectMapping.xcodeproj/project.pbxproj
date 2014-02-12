@@ -17,7 +17,7 @@
 		E7AF667817938AD0000EE96C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7AF667617938AD0000EE96C /* InfoPlist.strings */; };
 		E7AF667A17938AD0000EE96C /* ObjectMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF667917938AD0000EE96C /* ObjectMappingTests.m */; };
 		E7AF668917938B31000EE96C /* OMTBasicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF668817938B31000EE96C /* OMTBasicModel.m */; };
-		E7CB24F81839E706003A0375 /* OMTArrayClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CB24F71839E706003A0375 /* OMTArrayClass.m */; };
+		E7CB24F81839E706003A0375 /* OMTCollectionClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CB24F71839E706003A0375 /* OMTCollectionClass.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		E7AF668517938AEE000EE96C /* ObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectMapping.m; sourceTree = "<group>"; };
 		E7AF668717938B31000EE96C /* OMTBasicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OMTBasicModel.h; sourceTree = "<group>"; };
 		E7AF668817938B31000EE96C /* OMTBasicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTBasicModel.m; sourceTree = "<group>"; };
-		E7CB24F71839E706003A0375 /* OMTArrayClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTArrayClass.m; sourceTree = "<group>"; };
+		E7CB24F71839E706003A0375 /* OMTCollectionClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTCollectionClass.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +137,7 @@
 				E7AF668717938B31000EE96C /* OMTBasicModel.h */,
 				E7AF668817938B31000EE96C /* OMTBasicModel.m */,
 				E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */,
-				E7CB24F71839E706003A0375 /* OMTArrayClass.m */,
+				E7CB24F71839E706003A0375 /* OMTCollectionClass.m */,
 			);
 			path = ObjectMappingTests;
 			sourceTree = "<group>";
@@ -253,7 +253,7 @@
 				E762C27517A8C1A700441FAD /* HierarchicalModelsTests.m in Sources */,
 				E7AF667A17938AD0000EE96C /* ObjectMappingTests.m in Sources */,
 				E7AF668917938B31000EE96C /* OMTBasicModel.m in Sources */,
-				E7CB24F81839E706003A0375 /* OMTArrayClass.m in Sources */,
+				E7CB24F81839E706003A0375 /* OMTCollectionClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
