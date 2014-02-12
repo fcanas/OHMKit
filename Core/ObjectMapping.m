@@ -156,6 +156,23 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
     return true;
 }
 
+void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
+{
+    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
+    
+    NSString *newKey = mapping[key];
+    if (newKey != nil) {
+        NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+        OHMValueAdapterBlock adapterForKey = adapters[newKey];
+        if (adapterForKey) {
+            value = adapterForKey(value);
+        }
+        [self setValue:value forKey:newKey];
+    }
+}
+
+#pragma mark - IMPs for Public Methods
+
 void ohm_setMappingDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
     OHMSetMapping(self, dictionary);
@@ -176,21 +193,6 @@ void ohm_setDictionaryClasses_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetDictionaryClasses(self, dictionary);
 }
 
-void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
-{
-    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
-    
-    NSString *newKey = mapping[key];
-    if (newKey != nil) {
-        NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
-        OHMValueAdapterBlock adapterForKey = adapters[newKey];
-        if (adapterForKey) {
-            value = adapterForKey(value);
-        }
-        [self setValue:value forKey:newKey];
-    }
-}
-
 #pragma mark - Public Functions
 
 void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
@@ -203,7 +205,7 @@ void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
     objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
+void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
 {
     objc_setAssociatedObject(c, &_kOMClassArrayDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
