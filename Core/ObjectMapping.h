@@ -30,6 +30,7 @@
 + (void)ohm_setMapping:(NSDictionary *)dictionary;
 + (void)ohm_setAdapter:(NSDictionary *)dictionary;
 + (void)ohm_setArrayClasses:(NSDictionary *)dictionary;
++ (void)ohm_setDictionaryClasses:(NSDictionary *)dictionary;
 @end
 
 typedef id(^OHMValueAdapterBlock)(id);
