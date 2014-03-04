@@ -3,7 +3,7 @@
 //  ObjectMapping
 //
 //  Created by Fabian Canas on 7/14/13.
-//  Copyright (c) 2013 Fabian Canas.
+//  Copyright (c) 2013-2014 Fabian Canas.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
