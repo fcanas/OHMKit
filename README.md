@@ -1,28 +1,50 @@
 # OHMKit
 
-### Impedance matching between services and model objects.
-
 [![Build Status](https://travis-ci.org/fcanas/OHMKit.png?branch=master)](https://travis-ci.org/fcanas/OHMKit)
 
-Map `user_name` from your web service to `userName` in your Objective-C models. Or hydrate a whole hierarchical JSON response, including arrays of objects, into a tree of objects with a single line of code.
+OHMKit makes it easy to hydrate Objective-C model objects from web services or local files.
+
+OHMKit is a simple system for declaratively expressing how to translate responses from a JSON or plist representation to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code.
+
+Fit this JSON
+
+```
+{
+  'name' = 'Fabian',
+  'favorite_word' =  'absurd',
+  'favorite_number': 47
+}
+```
+
+into this object
+
+```
+@interface MYModel : NSObject
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *favoriteWord;
+@property (nonatomic, assign) NSInteger favoriteNumber;
+@end
+```
+
+Map `user_name` from your web service to `userName` in your Objective-C models. Map a dictionary of numbers to a `UIColor`. Or hydrate a whole hierarchical JSON response, including arrays, dictionaries, and arbitrarily deep heirarchies of real Objective-C objects ... with a single line of code.
 
 ## Why?
 
-OHMKit makes it easy to hydrate Objective-C model objects from web services. 
+OHMKit exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
 
-It exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
+Because sometimes, the web services your code consumes doesn't perfectly match your model objects.
 
-This project doesn't know about networks. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
+OHMKit is under 200 lines of well-tested code being leveraged in the app store now in apps used by millions of users.
 
-This project doesn't know about routes. Use [SOCKit](https://github.com/jverkoey/sockit).
+### What OHMKit is Not
 
-This project doesn't know about CoreData. It will not manage graphs of entities for you quite like RestKit does. But it *is* built on KVO, and does not care about your model objects' super class. So you can safely make subclasses of `NSManagedObject` mappable.
+OHMKit doesn't know about networks. Use [AFNetworking](https://github.com/AFNetworking/AFNetworking).
 
-## How?
+OHMKit doesn't know about routes. Use [SOCKit](https://github.com/jverkoey/sockit).
 
-It is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
+OHMKit doesn't know about JSON. Use [NSJSONSerialization](https://developer.apple.com/library/ios/documentation/foundation/reference/nsjsonserialization_class/Reference/Reference.html)
 
-It leverages the existing power of [KVO](https://developer.apple.com/library/mac/documentation/cocoa/conceptual/KeyValueObserving/KeyValueObserving.html) and in particular `-setValue:forKey:`, `-setValue:forUndefinedKey:`. OHMKit comes in at under 200 lines of code. If you want to see how it works, read the source or drop me a line.
+OHMKit doesn't know about CoreData. It will not manage graphs of entities for you quite like RestKit does. But OHMKit does not care about your model class' super class. So you can safely make subclasses of `NSManagedObject` mappable.
 
 ## Usage
 
@@ -174,6 +196,12 @@ Use [CocoaPods](http://www.cocoapods.org), add OHMKit to your `PodFile`, and run
 pod 'OHMKit'
 ```
 
+## How?
+
+OHMKit is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
+
+It leverages the existing power of Key Value Coding ([KVC](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/KeyValueCoding.html)) that's built right in to Cocoa. It safely wraps `-setValue:forKey:` and `-setValue:forUndefinedKey:` to make calls to `setValuesForKeysWithDictionary:` extremely powerful.
+
 ## Contributing
 
 Bug fixes, pull requests, enhancement requests and feedback are welcome. 
@@ -195,6 +223,10 @@ Option 2 is currently the only behavior, and I'm inclined to leave is as the def
 ### NSCoding
 
 It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be (had you noticed?).
+
+### NSValueTransformer
+
+Adapter blocks versus `NSValueTransformer`s. There's no reason why both can't co-exist.
 
 # License
 
