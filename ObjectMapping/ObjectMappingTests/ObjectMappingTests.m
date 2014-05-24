@@ -48,6 +48,13 @@
     [super tearDown];
 }
 
+#pragma mark - Helper Tests
+
+- (void)testSelectorToStringHelper
+{
+    XCTAssertEqualObjects(@"favoriteWord", ohm_key(favoriteWord), @"ohm_key() should convert selectors to keys");
+}
+
 #pragma mark - Basic Class Manipulation & Hydration
 
 - (void)testProtocolConformation

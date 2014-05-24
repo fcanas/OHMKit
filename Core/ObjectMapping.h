@@ -79,3 +79,9 @@ extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
 extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
 extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
+
+#pragma mark - Helpers
+
+#define ohm_key(x) NSStringFromSelector(@selector(x))
+
+
