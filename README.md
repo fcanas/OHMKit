@@ -1,6 +1,6 @@
 # OHMKit
 
-[![Build Status](https://travis-ci.org/fcanas/OHMKit.png?branch=master)](https://travis-ci.org/fcanas/OHMKit)
+[![Build Status](https://travis-ci.org/fcanas/OHMKit.svg?branch=master)](https://travis-ci.org/fcanas/OHMKit)
 
 OHMKit makes it easy to hydrate Objective-C model objects from web services or local files.
 
