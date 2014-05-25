@@ -1,2 +1,10 @@
 language: objective-c
-script: xctool -project ObjectMapping/ObjectMapping.xcodeproj -scheme ObjectMapping test -sdk iphonesimulator
+before_install: 
+  - brew update
+  - brew upgrade xctool > /dev/null
+xcode_project: ObjectMapping/ObjectMapping.xcodeproj
+xcode_scheme: ObjectMapping
+xcode_sdk:
+  - iphonesimulator7.0
+  - iphonesimulator7.1
+  # - iphonesimulator6.1
