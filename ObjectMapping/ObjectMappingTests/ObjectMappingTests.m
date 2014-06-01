@@ -38,7 +38,7 @@
 - (void)setUp
 {
     [super setUp];
-    OHMMappable([OMTBasicModel class]);    
+    OHMMappable([OMTBasicModel class]);
     OHMSetMapping([OMTBasicModel class], nil);
     OHMSetAdapter([OMTBasicModel class], nil);
 }
@@ -115,8 +115,8 @@
 - (void)testHydrationWithIdentityMappingDictionry
 {
     OHMSetMapping([OMTBasicModel class], @{@"name" : @"name",
-                                          @"favoriteWord" : @"favoriteWord",
-                                          @"favoriteNumber" : @"favoriteNumber"});
+                                           @"favoriteWord" : @"favoriteWord",
+                                           @"favoriteNumber" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
                                                  @"favoriteWord": @"absurd",
@@ -130,7 +130,7 @@
 - (void)testHydrationWithUsefulMappingDictionry
 {
     OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
-                                          @"favorite_number" : @"favoriteNumber"});
+                                           @"favorite_number" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
                                                  @"favorite_word": @"absurd",
@@ -144,7 +144,7 @@
 - (void)testRemovalOfMappingDictionary
 {
     OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
-                                          @"favorite_number" : @"favoriteNumber"});
+                                           @"favorite_number" : @"favoriteNumber"});
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"name": @"Fabian",
                                                  @"favorite_word": @"absurd",
@@ -181,10 +181,10 @@
         return @0;
     };
     OHMSetAdapter([OMTBasicModel class], @{@"favoriteNumber" : [fourtySevenAdapter copy]});
-
+    
     OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
     [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
-
+    
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
@@ -204,14 +204,45 @@
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
+#pragma mark - Mutable Mapping
+
+- (void)testAddingMapping
+{
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_number" : @"favoriteNumber"});
+    //                                           @"favorite_word" : @"favoriteWord"
+    //
+    //                                           @"favorite_model" : @"favoriteModel",
+    //                                           @"favorite_color" : @"favoriteColor"});
+    NSDictionary *modelData = @{@"name": @"Music",
+                                @"favorite_word": @"glitter",
+                                @"favorite_number" : @7,
+                                };
+    OMTBasicModel *basicModel = [OMTBasicModel new];
+    [basicModel setValuesForKeysWithDictionary:modelData];
+    XCTAssertEqualObjects(basicModel.name, @"Music", @"Model should be able to receive identity mappings");
+    XCTAssertEqual(basicModel.favoriteNumber, 7, @"Model should be able to do basic mappings");
+    XCTAssertNil(basicModel.favoriteWord, @"Model should not map unmapped keys");
+    
+    OHMAddMapping([OMTBasicModel class], @{@"favorite_word" : ohm_key(favoriteWord)});
+    
+    modelData = @{@"favorite_word": @"glitter",
+                  @"favorite_number" : @47,
+                  };
+    
+    [basicModel setValuesForKeysWithDictionary:modelData];
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"glitter", @"Model should map newly mapped keys");
+    XCTAssertEqual(basicModel.favoriteNumber, 47, @"Model should be able to do basic mappings");
+    XCTAssertEqualObjects(basicModel.name, @"Music", @"Model should not have values overwritten if they are not passed");
+}
+
 #pragma mark - All-Encompassing Test
 
 - (void)testEverything
 {
     OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
-                                          @"favorite_number" : @"favoriteNumber",
-                                          @"favorite_model" : @"favoriteModel",
-                                          @"favorite_color" : @"favoriteColor"});
+                                           @"favorite_number" : @"favoriteNumber",
+                                           @"favorite_model" : @"favoriteModel",
+                                           @"favorite_color" : @"favoriteColor"});
     OHMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
         return [UIColor colorWithRed:[numberArray[0] integerValue]/255.0
                                green:[numberArray[1] integerValue]/255.0

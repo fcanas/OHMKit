@@ -35,6 +35,8 @@ const int _kOMClassDictionaryDictionaryKey;
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
 
+static NSDictionary * f_ohm_mapping(Class c);
+
 #pragma mark - The Mixin
 
 @implementation NSObject (OMMappingSwizzleBase)
@@ -81,8 +83,7 @@ void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
 {
-    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
-    NSString *newKey = mapping[key];
+    NSString *newKey = f_ohm_mapping([self class])[key];
     if (newKey) {
         key = newKey;
     }
@@ -158,9 +159,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
 
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
 {
-    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
-    
-    NSString *newKey = mapping[key];
+    NSString *newKey = f_ohm_mapping([self class])[key];
     if (newKey != nil) {
         NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
         OHMValueAdapterBlock adapterForKey = adapters[newKey];
@@ -193,11 +192,55 @@ void ohm_setDictionaryClasses_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetDictionaryClasses(self, dictionary);
 }
 
+#pragma mark - Mapping Helper Functions
+
+/**
+ Get the associated mapping dictionary
+ */
+static inline NSDictionary * f_ohm_mapping(Class c)
+{
+    return objc_getAssociatedObject(c, &_kOMClassMappingDictionaryKey);
+}
+
+/**
+ Get the mapping dictionary as an object directly - no copy.
+ */
+static inline void f_ohm_set_mapping(Class c, NSDictionary *mappingDictionary)
+{
+    objc_setAssociatedObject(c, &_kOMClassMappingDictionaryKey, mappingDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+/** 
+ Returns an NSMutableDictionary, favoring first the dictionary passed,
+ second, it will make a mutable copy,
+ or if passed nil, returns a new mutable dictionary.
+*/
+static NSMutableDictionary * ohm_mutableDictionary(NSDictionary *dictionary)
+{
+    if (dictionary == nil) {
+        return [NSMutableDictionary dictionary];
+    }
+    NSMutableDictionary *m = nil;
+    if ([dictionary isKindOfClass:[NSMutableDictionary class]]) {
+        m = (NSMutableDictionary *)dictionary;
+    } else {
+        m = [dictionary mutableCopy];
+    }
+    return m;
+}
+
 #pragma mark - Public Functions
 
 void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
 {
-    objc_setAssociatedObject(c, &_kOMClassMappingDictionaryKey, mappingDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    f_ohm_set_mapping(c, [mappingDictionary copy]);
+}
+
+void OHMAddMapping(Class c, NSDictionary *mappingDictionary)
+{
+    NSMutableDictionary *existingMapping = ohm_mutableDictionary(f_ohm_mapping(c));
+    [existingMapping addEntriesFromDictionary:mappingDictionary];
+    f_ohm_set_mapping(c, existingMapping);
 }
 
 void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
