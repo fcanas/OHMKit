@@ -243,6 +243,13 @@ void OHMAddMapping(Class c, NSDictionary *mappingDictionary)
     f_ohm_set_mapping(c, existingMapping);
 }
 
+void OHMRemoveMapping(Class c, NSArray *array)
+{
+    NSMutableDictionary *mutableMapping = ohm_mutableDictionary(f_ohm_mapping(c));
+    [mutableMapping removeObjectsForKeys:array];
+    f_ohm_set_mapping(c, mutableMapping);
+}
+
 void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 {
     objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

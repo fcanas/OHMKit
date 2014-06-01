@@ -80,6 +80,7 @@ extern void OHMMappable(Class c);
 
 extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
 extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMRemoveMapping(Class c, NSArray *keyArray);
 
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
 

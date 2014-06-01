@@ -209,10 +209,6 @@
 - (void)testAddingMapping
 {
     OHMSetMapping([OMTBasicModel class], @{@"favorite_number" : @"favoriteNumber"});
-    //                                           @"favorite_word" : @"favoriteWord"
-    //
-    //                                           @"favorite_model" : @"favoriteModel",
-    //                                           @"favorite_color" : @"favoriteColor"});
     NSDictionary *modelData = @{@"name": @"Music",
                                 @"favorite_word": @"glitter",
                                 @"favorite_number" : @7,
@@ -233,6 +229,36 @@
     XCTAssertEqualObjects(basicModel.favoriteWord, @"glitter", @"Model should map newly mapped keys");
     XCTAssertEqual(basicModel.favoriteNumber, 47, @"Model should be able to do basic mappings");
     XCTAssertEqualObjects(basicModel.name, @"Music", @"Model should not have values overwritten if they are not passed");
+}
+
+- (void)testRemoveMapping
+{
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_number" : @"favoriteNumber",
+                                           @"favorite_word" : @"favoriteWord"});
+    
+    NSDictionary *modelData = @{@"name": @"Music",
+                                @"favorite_word": @"glitter",
+                                @"favorite_number" : @7,
+                                };
+    OMTBasicModel *basicModel = [OMTBasicModel new];
+    
+    [basicModel setValuesForKeysWithDictionary:modelData];
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"glitter", @"Model should be able to do basic mappings");
+    XCTAssertEqual(basicModel.favoriteNumber, 7, @"Model should be able to do basic mappings");
+    XCTAssertEqualObjects(basicModel.name, @"Music", @"Model should be able to do basic mappings");
+    
+    OHMRemoveMapping([OMTBasicModel class], @[@"favorite_word"]);
+    
+    modelData = @{@"name":@"new name",
+                  @"favorite_word": @"new word",
+                  @"favorite_number" : @47,
+                  };
+    
+    [basicModel setValuesForKeysWithDictionary:modelData];
+    XCTAssertEqualObjects(basicModel.name, @"new name", @"Model should be able to receive identity mappings");
+    XCTAssertEqual(basicModel.favoriteNumber, 47, @"Model should be able to do continue to do mapping after a removal");
+    XCTAssertEqualObjects(basicModel.favoriteWord, @"glitter", @"model should not receive values into its unmapped property");
+    
 }
 
 #pragma mark - All-Encompassing Test
