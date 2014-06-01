@@ -29,8 +29,8 @@
 /**
  The OHMMappable protocol defines methods that can be used to set mapping patterns that OHMKit provides on classes.
  
- You do not need to implement any of these methods. By calling OHMMappable with your class as a parameter, that receiving class will
- always conform to OHMMappable. 
+ You do not need to implement any of these methods. By calling OHMMappable() with your class as a parameter, that receiving class will
+ be modified to conform to OHMMappable.
  
  @warning Subclasses of classes that are dynamically made mappable do not themselves become mappable.
  */
