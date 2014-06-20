@@ -74,11 +74,17 @@
 
 typedef id(^OHMValueAdapterBlock)(id);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern void OHMMappable(Class c);
 extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
 extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
 extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
+#ifdef __cplusplus
+}
+#endif
 
 #pragma mark - Helpers
 
