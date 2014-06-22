@@ -83,10 +83,16 @@ extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
 extern void OHMRemoveMapping(Class c, NSArray *keyArray);
 
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
+extern void OHMAddAdapter(Class c, NSDictionary *adapterDictionary);
+extern void OHMRemoveAdapter(Class c, NSArray *keyArray);
 
 extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
+extern void OHMAddArrayClasses(Class c, NSDictionary *classDictionary);
+extern void OHMRemoveArray(Class c, NSArray *keyArray);
 
 extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
+extern void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary);
+extern void OHMRemoveDictionry(Class c, NSArray *keyArray);
 
 #pragma mark - Helpers
 

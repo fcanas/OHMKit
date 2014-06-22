@@ -240,7 +240,9 @@ static inline void ohm_remove_for_key(Class c, NSArray *keys, const void *key)
     ohm_set_for_key(c, mutableMapping, key);
 }
 
-#pragma mark - Public Functions
+#pragma mark -- Public Functions
+
+#pragma mark - Mapping
 
 void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
 {
@@ -257,19 +259,61 @@ void OHMRemoveMapping(Class c, NSArray *array)
     ohm_remove_for_key(c, array, &_kOMClassMappingDictionaryKey);
 }
 
+#pragma mark - Adapter
+
 void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
+
+#pragma TODO - Tests for add and remove adapter functions
+
+void OHMAddAdapter(Class c, NSDictionary *adapterDictionary)
+{
+    ohm_add_for_key(c, adapterDictionary, &_kOMClassAdapterDictionaryKey);
+}
+
+void OHMRemoveAdapter(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassAdapterDictionaryKey);
+}
+
+#pragma mark - Array
 
 void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
 {
     ohm_set_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
 }
 
+#pragma TODO - Tests for add and remove array functions
+
+void OHMAddArrayClasses(Class c, NSDictionary *classDictionary)
+{
+    ohm_add_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
+}
+
+void OHMRemoveArray(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassArrayDictionaryKey);
+}
+
+#pragma mark - Dictionary
+
 void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary)
 {
     ohm_set_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
+}
+
+#pragma TODO - Tests for add and remove dictionary functions
+
+void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary)
+{
+    ohm_add_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
+}
+
+void OHMRemoveDictionry(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassDictionaryDictionaryKey);
 }
 
 void OHMMappable(Class c)
