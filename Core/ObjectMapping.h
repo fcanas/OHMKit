@@ -29,8 +29,8 @@
 /**
  The OHMMappable protocol defines methods that can be used to set mapping patterns that OHMKit provides on classes.
  
- You do not need to implement any of these methods. By calling OHMMappable with your class as a parameter, that receiving class will
- always conform to OHMMappable. 
+ You do not need to implement any of these methods. By calling OHMMappable() with your class as a parameter, that receiving class will
+ be modified to conform to OHMMappable.
  
  @warning Subclasses of classes that are dynamically made mappable do not themselves become mappable.
  */
@@ -74,11 +74,25 @@
 
 typedef id(^OHMValueAdapterBlock)(id);
 
+#pragma mark - Supporting Functions
+
 extern void OHMMappable(Class c);
+
 extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMRemoveMapping(Class c, NSArray *keyArray);
+
 extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
+extern void OHMAddAdapter(Class c, NSDictionary *adapterDictionary);
+extern void OHMRemoveAdapter(Class c, NSArray *keyArray);
+
 extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
+extern void OHMAddArrayClasses(Class c, NSDictionary *classDictionary);
+extern void OHMRemoveArray(Class c, NSArray *keyArray);
+
 extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
+extern void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary);
+extern void OHMRemoveDictionry(Class c, NSArray *keyArray);
 
 #pragma mark - Helpers
 

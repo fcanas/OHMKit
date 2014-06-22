@@ -27,13 +27,15 @@
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
-const int _kOMClassMappingDictionaryKey;
-const int _kOMClassAdapterDictionaryKey;
-const int _kOMClassArrayDictionaryKey;
-const int _kOMClassDictionaryDictionaryKey;
+static const void *_kOMClassMappingDictionaryKey = &_kOMClassMappingDictionaryKey;
+static const void *_kOMClassAdapterDictionaryKey = &_kOMClassAdapterDictionaryKey;
+static const void *_kOMClassArrayDictionaryKey = &_kOMClassArrayDictionaryKey;
+static const void *_kOMClassDictionaryDictionaryKey = &_kOMClassDictionaryDictionaryKey;
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key);
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
+
+static NSDictionary * f_ohm_mapping(Class c);
 
 #pragma mark - The Mixin
 
@@ -81,8 +83,7 @@ void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key);
 
 bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
 {
-    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
-    NSString *newKey = mapping[key];
+    NSString *newKey = f_ohm_mapping([self class])[key];
     if (newKey) {
         key = newKey;
     }
@@ -158,9 +159,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
 
 void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
 {
-    NSDictionary *mapping = objc_getAssociatedObject([self class], &_kOMClassMappingDictionaryKey);
-    
-    NSString *newKey = mapping[key];
+    NSString *newKey = f_ohm_mapping([self class])[key];
     if (newKey != nil) {
         NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
         OHMValueAdapterBlock adapterForKey = adapters[newKey];
@@ -193,26 +192,128 @@ void ohm_setDictionaryClasses_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetDictionaryClasses(self, dictionary);
 }
 
-#pragma mark - Public Functions
+#pragma mark - Mapping Helper Functions
+
+/**
+ Get the associated mapping dictionary
+ */
+static inline NSDictionary * f_ohm_mapping(Class c)
+{
+    return objc_getAssociatedObject(c, &_kOMClassMappingDictionaryKey);
+}
+
+/** 
+ Returns an NSMutableDictionary, favoring first the dictionary passed,
+ second, it will make a mutable copy,
+ or if passed nil, returns a new mutable dictionary.
+*/
+static NSMutableDictionary * ohm_mutableDictionary(NSDictionary *dictionary)
+{
+    if (dictionary == nil) {
+        return [NSMutableDictionary dictionary];
+    }
+    NSMutableDictionary *m = nil;
+    if ([dictionary isKindOfClass:[NSMutableDictionary class]]) {
+        m = (NSMutableDictionary *)dictionary;
+    } else {
+        m = [dictionary mutableCopy];
+    }
+    return m;
+}
+
+static inline void ohm_set_for_key(Class c, id value, const void *key)
+{
+    objc_setAssociatedObject(c, key, value, OBJC_ASSOCIATION_COPY);
+}
+
+static inline void ohm_add_for_key(Class c, NSDictionary *dict, const void *key)
+{
+    NSMutableDictionary *existingMapping = ohm_mutableDictionary(objc_getAssociatedObject(c, key));
+    [existingMapping addEntriesFromDictionary:dict];
+    ohm_set_for_key(c, existingMapping, key);
+}
+
+static inline void ohm_remove_for_key(Class c, NSArray *keys, const void *key)
+{
+    NSMutableDictionary *mutableMapping = ohm_mutableDictionary(f_ohm_mapping(c));
+    [mutableMapping removeObjectsForKeys:keys];
+    ohm_set_for_key(c, mutableMapping, key);
+}
+
+#pragma mark -- Public Functions
+
+#pragma mark - Mapping
 
 void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
 {
-    objc_setAssociatedObject(c, &_kOMClassMappingDictionaryKey, mappingDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    ohm_set_for_key(c, mappingDictionary, &_kOMClassMappingDictionaryKey);
 }
+
+void OHMAddMapping(Class c, NSDictionary *mappingDictionary)
+{
+    ohm_add_for_key(c, mappingDictionary, &_kOMClassMappingDictionaryKey);
+}
+
+void OHMRemoveMapping(Class c, NSArray *array)
+{
+    ohm_remove_for_key(c, array, &_kOMClassMappingDictionaryKey);
+}
+
+#pragma mark - Adapter
 
 void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
 {
-    objc_setAssociatedObject(c, &_kOMClassAdapterDictionaryKey, adapterDicionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
+
+#pragma TODO - Tests for add and remove adapter functions
+
+void OHMAddAdapter(Class c, NSDictionary *adapterDictionary)
+{
+    ohm_add_for_key(c, adapterDictionary, &_kOMClassAdapterDictionaryKey);
+}
+
+void OHMRemoveAdapter(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassAdapterDictionaryKey);
+}
+
+#pragma mark - Array
 
 void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
 {
-    objc_setAssociatedObject(c, &_kOMClassArrayDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    ohm_set_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
 }
+
+#pragma TODO - Tests for add and remove array functions
+
+void OHMAddArrayClasses(Class c, NSDictionary *classDictionary)
+{
+    ohm_add_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
+}
+
+void OHMRemoveArray(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassArrayDictionaryKey);
+}
+
+#pragma mark - Dictionary
 
 void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary)
 {
-    objc_setAssociatedObject(c, &_kOMClassDictionaryDictionaryKey, classDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    ohm_set_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
+}
+
+#pragma TODO - Tests for add and remove dictionary functions
+
+void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary)
+{
+    ohm_add_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
+}
+
+void OHMRemoveDictionry(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassDictionaryDictionaryKey);
 }
 
 void OHMMappable(Class c)
