@@ -1,6 +1,9 @@
 # OHMKit
 
-[![Build Status](https://travis-ci.org/fcanas/OHMKit.svg?branch=master)](https://travis-ci.org/fcanas/OHMKit)
+[![CI Status](http://img.shields.io/travis/fcanas/OHMKit.svg?style=flat)](https://travis-ci.org/fcanas/OHMKit)
+[![Version](https://img.shields.io/cocoapods/v/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
+[![License](https://img.shields.io/cocoapods/l/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
+[![Platform](https://img.shields.io/cocoapods/p/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
 
 OHMKit makes it easy to hydrate Objective-C model objects from web services or local files.
 
