@@ -43,6 +43,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E7541CAE197EDFCB0051FFB9 /* OHMKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OHMKit.h; sourceTree = "<group>"; };
 		E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierarchicalModelsTests.m; sourceTree = "<group>"; };
 		E7AF665A17938AD0000EE96C /* libObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectMapping.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AF665D17938AD0000EE96C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,6 +157,7 @@
 			children = (
 				E7AF668417938AEE000EE96C /* ObjectMapping.h */,
 				E7AF668517938AEE000EE96C /* ObjectMapping.m */,
+				E7541CAE197EDFCB0051FFB9 /* OHMKit.h */,
 			);
 			name = Core;
 			path = ../../Core;
