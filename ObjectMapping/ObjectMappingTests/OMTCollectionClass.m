@@ -25,7 +25,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "ObjectMapping.h"
+#import "OHMKit.h"
 #import "OMTBasicModel.h"
 
 @interface OMTModelWithCollections : NSObject

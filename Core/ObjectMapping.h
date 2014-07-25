@@ -35,10 +35,11 @@
  @warning Subclasses of classes that are dynamically made mappable do not themselves become mappable.
  */
 @protocol OHMMappable
+
 /**
  Sets the dictionary for mapping keys. 
 
- The key is a key you would like to map from, what might be called a source key such as @"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @"favoriteColor".
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
 
  @param dictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
@@ -72,27 +73,39 @@
 + (void)ohm_setDictionaryClasses:(NSDictionary *)dictionary;
 @end
 
-typedef id(^OHMValueAdapterBlock)(id);
-
 #pragma mark - Supporting Functions
 
 extern void OHMMappable(Class c);
 
+/**
+ Sets the dictionary for mapping keys.
+ 
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
+ 
+ @param c The class on which to set the mapping dictionary.
+ @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
+ */
 extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
+
+/**
+ Adds the key value pairs from the passed dictionary to the existing mapping dictionary.
+
+ If there is no existing mapping dictionary, one is created. If a value for a passed-in key exists, it will be overwritten.
+
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
+ 
+ @param c The class on which to set the mapping dictionary.
+ @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
+ */
 extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
+
+/**
+ Remove the mapping for each key in @p keyArray on the given class.
+
+ @param c The class whose mappings should be removed.
+ @param keyArray An array of keys to be removed from mapping.
+ */
 extern void OHMRemoveMapping(Class c, NSArray *keyArray);
-
-extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
-extern void OHMAddAdapter(Class c, NSDictionary *adapterDictionary);
-extern void OHMRemoveAdapter(Class c, NSArray *keyArray);
-
-extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
-extern void OHMAddArrayClasses(Class c, NSDictionary *classDictionary);
-extern void OHMRemoveArray(Class c, NSArray *keyArray);
-
-extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
-extern void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary);
-extern void OHMRemoveDictionry(Class c, NSArray *keyArray);
 
 #pragma mark - Helpers
 

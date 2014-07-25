@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E7AF665917938AD0000EE96C"
-               BuildableName = "libObjectMapping.a"
-               BlueprintName = "ObjectMapping"
-               ReferencedContainer = "container:ObjectMapping.xcodeproj">
+               BuildableName = "libOHMKit.a"
+               BlueprintName = "OHMKit"
+               ReferencedContainer = "container:OHMKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E7AF666917938AD0000EE96C"
-               BuildableName = "ObjectMappingTests.xctest"
-               BlueprintName = "ObjectMappingTests"
-               ReferencedContainer = "container:ObjectMapping.xcodeproj">
+               BuildableName = "OHMKitTests.xctest"
+               BlueprintName = "OHMKitTests"
+               ReferencedContainer = "container:OHMKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E7AF666917938AD0000EE96C"
-               BuildableName = "ObjectMappingTests.xctest"
-               BlueprintName = "ObjectMappingTests"
-               ReferencedContainer = "container:ObjectMapping.xcodeproj">
+               BuildableName = "OHMKitTests.xctest"
+               BlueprintName = "OHMKitTests"
+               ReferencedContainer = "container:OHMKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -63,6 +63,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E7AF665917938AD0000EE96C"
+            BuildableName = "libOHMKit.a"
+            BlueprintName = "OHMKit"
+            ReferencedContainer = "container:OHMKit.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

@@ -25,7 +25,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "ObjectMapping.h"
+#import "OHMKit.h"
 
 @interface OMTHierarchyRootModel : NSObject
 @property (nonatomic, strong) NSString *rootProperty;

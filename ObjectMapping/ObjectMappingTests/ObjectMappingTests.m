@@ -26,7 +26,7 @@
 #import <XCTest/XCTest.h>
 #import <UIKit/UIKit.h>
 
-#import "ObjectMapping.h"
+#import "OHMKit.h"
 #import "OMTBasicModel.h"
 
 @interface ObjectMappingTests : XCTestCase
