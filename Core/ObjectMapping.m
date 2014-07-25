@@ -103,7 +103,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
         NSDictionary *arrays = objc_getAssociatedObject([self class], &_kOMClassArrayDictionaryKey);
         if (arrays) {
             Class arrayClass = arrays[key];
-            if (arrayClass) {
+            if (arrayClass && [v.firstObject isKindOfClass:[NSDictionary class]]) {
                 NSMutableArray *r = [NSMutableArray arrayWithCapacity:v.count];
                 for (NSDictionary *d in v) {
                     id leafInstance = [[arrayClass alloc] init];
