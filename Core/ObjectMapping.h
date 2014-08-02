@@ -39,7 +39,7 @@
 /**
  Sets the dictionary for mapping keys. 
 
- The key is a key you would like to map from, what might be called a source key such as @"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @"favoriteColor".
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
 
  @param dictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
@@ -73,13 +73,6 @@
 + (void)ohm_setDictionaryClasses:(NSDictionary *)dictionary;
 @end
 
-/**
- A convenience block type that takes a single `id` and returns a single `id`. 
-
- Adapters need not be explicitly of type OHMValueAdapterBlock, but can be any block with an equivalent signature.
- */
-typedef id(^OHMValueAdapterBlock)(id);
-
 #pragma mark - Supporting Functions
 
 extern void OHMMappable(Class c);
@@ -87,7 +80,7 @@ extern void OHMMappable(Class c);
 /**
  Sets the dictionary for mapping keys.
  
- The key is a key you would like to map from, what might be called a source key such as @"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @"favoriteColor".
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
  
  @param c The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
@@ -99,33 +92,20 @@ extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
 
  If there is no existing mapping dictionary, one is created. If a value for a passed-in key exists, it will be overwritten.
 
- The key is a key you would like to map from, what might be called a source key such as @"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @"favoriteColor".
+ The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".
  
  @param c The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
 extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
-extern void OHMRemoveMapping(Class c, NSArray *keyArray);
 
 /**
- Sets the dictionary of value adapters for keys.
- 
- The key is a KVC key for which you would like to adapt incoming values. NSNumbers do not need adapters to be mapped to primitive properties (e.g. int, NSInteger, float, BOOL). To adapt values to a property with a struct type, create an adapter block that creates the struct, and wrap it in an NSValue object and have the block return that NSValue.
- 
- @param c The class on which to set the adapter dictionary.
- @param dictionary A dictionary target key, value adapter pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a block of type OHMValueAdapterBlock, or conforming to the signature id(^)(id).
+ Remove the mapping for each key in @p keyArray on the given class.
+
+ @param c The class whose mappings should be removed.
+ @param keyArray An array of keys to be removed from mapping.
  */
-extern void OHMSetAdapter(Class c, NSDictionary *adapterDictionary);
-extern void OHMAddAdapter(Class c, NSDictionary *adapterDictionary);
-extern void OHMRemoveAdapter(Class c, NSArray *keyArray);
-
-extern void OHMSetArrayClasses(Class c, NSDictionary *classDictionary);
-extern void OHMAddArrayClasses(Class c, NSDictionary *classDictionary);
-extern void OHMRemoveArray(Class c, NSArray *keyArray);
-
-extern void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary);
-extern void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary);
-extern void OHMRemoveDictionry(Class c, NSArray *keyArray);
+extern void OHMRemoveMapping(Class c, NSArray *keyArray);
 
 #pragma mark - Helpers
 

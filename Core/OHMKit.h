@@ -24,9 +24,12 @@
 //  THE SOFTWARE.
 //
 
-#ifndef ObjectMapping_OHMKit_h
-#define ObjectMapping_OHMKit_h
+#ifndef _OHMKIT_
+#define _OHMKIT_
 
-#import <OHMKit/ObjectMapping.h>
+#import "ObjectMapping.h"
+#import "OHMAdapters.h"
+#import "OHMArrayMapping.h"
+#import "OHMDictionaryMapping.h"
 
 #endif

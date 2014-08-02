@@ -23,7 +23,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-#import "ObjectMapping.h"
+#import "OHMKit.h"
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
@@ -311,7 +311,7 @@ void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary)
     ohm_add_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
 }
 
-void OHMRemoveDictionry(Class c, NSArray *keyArray)
+void OHMRemoveDictionary(Class c, NSArray *keyArray)
 {
     ohm_remove_for_key(c, keyArray, &_kOMClassDictionaryDictionaryKey);
 }

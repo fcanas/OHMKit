@@ -17,9 +17,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E7AF666917938AD0000EE96C"
-               BuildableName = "ObjectMappingTests.xctest"
-               BlueprintName = "ObjectMappingTests"
-               ReferencedContainer = "container:ObjectMapping.xcodeproj">
+               BuildableName = "OHMKitTests.xctest"
+               BlueprintName = "OHMKitTests"
+               ReferencedContainer = "container:OHMKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
