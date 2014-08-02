@@ -75,6 +75,9 @@
 
 #pragma mark - Supporting Functions
 
+/**
+ Enable a class as mappable.
+ */
 extern void OHMMappable(Class c);
 
 /**
