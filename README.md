@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
 [![Platform](https://img.shields.io/cocoapods/p/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
 
-OHMKit makes it easy to hydrate Objective-C model objects from web services or local files.
+OHMKit makes it easy to hydrate Objective-C model objects from web services or local files. It works especially well with JSON, and it's an awful lot like [Mantle](https://github.com/Mantle/Mantle) and [JSONModel](https://github.com/icanzilb/JSONModel) except that OHMKit doesn't require your models to inherit from a base class.
 
 OHMKit is a simple system for declaratively expressing how to translate responses from a JSON or plist representation to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code.
 
@@ -33,7 +33,7 @@ Map `user_name` from your web service to `userName` in your Objective-C models. 
 
 ## Why?
 
-OHMKit exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect.
+OHMKit exists because [RestKit](https://github.com/RestKit/RestKit) (which is awesome by the way), is sometimes too big, heavy, and indirect. Because [Mantle](https://github.com/Mantle/Mantle) and [JSONModel](https://github.com/icanzilb/JSONModel) require your models to inherit from a base class.
 
 Because sometimes, the web services your code consumes doesn't perfectly match your model objects.
 
@@ -209,7 +209,7 @@ It leverages the existing power of Key Value Coding ([KVC](https://developer.app
 
 Bug fixes, pull requests, enhancement requests and feedback are welcome. 
 
-If you plan on contributing code, please notice that OHMKit has tests. If you're fixing a bug, please also include a test that exposes the bug and therefore guards against a regression.
+If you plan on contributing code, please notice that OHMKit has tests. If you're fixing a bug, please include a test that exposes the bug and therefore guards against a regression.
 
 ## TODO
 
