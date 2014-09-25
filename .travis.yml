@@ -1,8 +1,5 @@
 language: objective-c
-before_install: 
-  - brew update
-  - brew upgrade xctool > /dev/null
-xcode_project: ObjectMapping/ObjectMapping.xcodeproj
+xcode_project: ObjectMapping/OHMKit.xcodeproj
 xcode_scheme: ObjectMapping
 xcode_sdk:
   - iphonesimulator7.0

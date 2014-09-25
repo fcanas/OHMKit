@@ -23,7 +23,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-#import "ObjectMapping.h"
+#import "OHMKit.h"
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
@@ -103,7 +103,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
         NSDictionary *arrays = objc_getAssociatedObject([self class], &_kOMClassArrayDictionaryKey);
         if (arrays) {
             Class arrayClass = arrays[key];
-            if (arrayClass) {
+            if (arrayClass && [v.firstObject isKindOfClass:[NSDictionary class]]) {
                 NSMutableArray *r = [NSMutableArray arrayWithCapacity:v.count];
                 for (NSDictionary *d in v) {
                     id leafInstance = [[arrayClass alloc] init];
@@ -311,7 +311,7 @@ void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary)
     ohm_add_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
 }
 
-void OHMRemoveDictionry(Class c, NSArray *keyArray)
+void OHMRemoveDictionary(Class c, NSArray *keyArray)
 {
     ohm_remove_for_key(c, keyArray, &_kOMClassDictionaryDictionaryKey);
 }

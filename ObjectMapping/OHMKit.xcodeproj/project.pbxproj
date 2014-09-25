@@ -13,7 +13,7 @@
 		E7AF666C17938AD0000EE96C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF666B17938AD0000EE96C /* XCTest.framework */; };
 		E7AF666D17938AD0000EE96C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665D17938AD0000EE96C /* Foundation.framework */; };
 		E7AF666F17938AD0000EE96C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF666E17938AD0000EE96C /* UIKit.framework */; };
-		E7AF667217938AD0000EE96C /* libObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665A17938AD0000EE96C /* libObjectMapping.a */; };
+		E7AF667217938AD0000EE96C /* libOHMKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AF665A17938AD0000EE96C /* libOHMKit.a */; };
 		E7AF667817938AD0000EE96C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7AF667617938AD0000EE96C /* InfoPlist.strings */; };
 		E7AF667A17938AD0000EE96C /* ObjectMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF667917938AD0000EE96C /* ObjectMappingTests.m */; };
 		E7AF668917938B31000EE96C /* OMTBasicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AF668817938B31000EE96C /* OMTBasicModel.m */; };
@@ -43,14 +43,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E711F9FF198C718E00973D5F /* OHMAdapters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OHMAdapters.h; sourceTree = "<group>"; };
+		E7541CAE197EDFCB0051FFB9 /* OHMKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OHMKit.h; sourceTree = "<group>"; };
 		E78A9EB317A8935000093863 /* HierarchicalModelsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierarchicalModelsTests.m; sourceTree = "<group>"; };
-		E7AF665A17938AD0000EE96C /* libObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjectMapping.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7AF665A17938AD0000EE96C /* libOHMKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOHMKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AF665D17938AD0000EE96C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		E7AF666117938AD0000EE96C /* ObjectMapping-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjectMapping-Prefix.pch"; sourceTree = "<group>"; };
-		E7AF666A17938AD0000EE96C /* ObjectMappingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObjectMappingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7AF666117938AD0000EE96C /* OHMKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OHMKit-Prefix.pch"; sourceTree = "<group>"; };
+		E7AF666A17938AD0000EE96C /* OHMKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OHMKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AF666B17938AD0000EE96C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E7AF666E17938AD0000EE96C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		E7AF667517938AD0000EE96C /* ObjectMappingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ObjectMappingTests-Info.plist"; sourceTree = "<group>"; };
+		E7AF667517938AD0000EE96C /* OHMKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OHMKitTests-Info.plist"; sourceTree = "<group>"; };
 		E7AF667717938AD0000EE96C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E7AF667917938AD0000EE96C /* ObjectMappingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectMappingTests.m; sourceTree = "<group>"; };
 		E7AF668417938AEE000EE96C /* ObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectMapping.h; sourceTree = "<group>"; };
@@ -58,6 +60,8 @@
 		E7AF668717938B31000EE96C /* OMTBasicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OMTBasicModel.h; sourceTree = "<group>"; };
 		E7AF668817938B31000EE96C /* OMTBasicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTBasicModel.m; sourceTree = "<group>"; };
 		E7CB24F71839E706003A0375 /* OMTCollectionClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMTCollectionClass.m; sourceTree = "<group>"; };
+		E7F0D4AD198C6C76004632FD /* OHMArrayMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OHMArrayMapping.h; sourceTree = "<group>"; };
+		E7F0D4AE198C6CCA004632FD /* OHMDictionaryMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OHMDictionaryMapping.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +80,7 @@
 				E7AF666C17938AD0000EE96C /* XCTest.framework in Frameworks */,
 				E7AF666F17938AD0000EE96C /* UIKit.framework in Frameworks */,
 				E7AF666D17938AD0000EE96C /* Foundation.framework in Frameworks */,
-				E7AF667217938AD0000EE96C /* libObjectMapping.a in Frameworks */,
+				E7AF667217938AD0000EE96C /* libOHMKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,8 +100,8 @@
 		E7AF665B17938AD0000EE96C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E7AF665A17938AD0000EE96C /* libObjectMapping.a */,
-				E7AF666A17938AD0000EE96C /* ObjectMappingTests.xctest */,
+				E7AF665A17938AD0000EE96C /* libOHMKit.a */,
+				E7AF666A17938AD0000EE96C /* OHMKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,7 +128,7 @@
 		E7AF666017938AD0000EE96C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E7AF666117938AD0000EE96C /* ObjectMapping-Prefix.pch */,
+				E7AF666117938AD0000EE96C /* OHMKit-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -145,7 +149,7 @@
 		E7AF667417938AD0000EE96C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E7AF667517938AD0000EE96C /* ObjectMappingTests-Info.plist */,
+				E7AF667517938AD0000EE96C /* OHMKitTests-Info.plist */,
 				E7AF667617938AD0000EE96C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -156,6 +160,10 @@
 			children = (
 				E7AF668417938AEE000EE96C /* ObjectMapping.h */,
 				E7AF668517938AEE000EE96C /* ObjectMapping.m */,
+				E7541CAE197EDFCB0051FFB9 /* OHMKit.h */,
+				E7F0D4AD198C6C76004632FD /* OHMArrayMapping.h */,
+				E7F0D4AE198C6CCA004632FD /* OHMDictionaryMapping.h */,
+				E711F9FF198C718E00973D5F /* OHMAdapters.h */,
 			);
 			name = Core;
 			path = ../../Core;
@@ -164,9 +172,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E7AF665917938AD0000EE96C /* ObjectMapping */ = {
+		E7AF665917938AD0000EE96C /* OHMKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7AF667D17938AD0000EE96C /* Build configuration list for PBXNativeTarget "ObjectMapping" */;
+			buildConfigurationList = E7AF667D17938AD0000EE96C /* Build configuration list for PBXNativeTarget "OHMKit" */;
 			buildPhases = (
 				E7AF665617938AD0000EE96C /* Sources */,
 				E7AF665717938AD0000EE96C /* Frameworks */,
@@ -176,14 +184,14 @@
 			);
 			dependencies = (
 			);
-			name = ObjectMapping;
+			name = OHMKit;
 			productName = ObjectMapping;
-			productReference = E7AF665A17938AD0000EE96C /* libObjectMapping.a */;
+			productReference = E7AF665A17938AD0000EE96C /* libOHMKit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		E7AF666917938AD0000EE96C /* ObjectMappingTests */ = {
+		E7AF666917938AD0000EE96C /* OHMKitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7AF668017938AD0000EE96C /* Build configuration list for PBXNativeTarget "ObjectMappingTests" */;
+			buildConfigurationList = E7AF668017938AD0000EE96C /* Build configuration list for PBXNativeTarget "OHMKitTests" */;
 			buildPhases = (
 				E7AF666617938AD0000EE96C /* Sources */,
 				E7AF666717938AD0000EE96C /* Frameworks */,
@@ -194,9 +202,9 @@
 			dependencies = (
 				E7AF667117938AD0000EE96C /* PBXTargetDependency */,
 			);
-			name = ObjectMappingTests;
+			name = OHMKitTests;
 			productName = ObjectMappingTests;
-			productReference = E7AF666A17938AD0000EE96C /* ObjectMappingTests.xctest */;
+			productReference = E7AF666A17938AD0000EE96C /* OHMKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -205,10 +213,11 @@
 		E7AF665217938AD0000EE96C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = OHM;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Fabian Canas";
 			};
-			buildConfigurationList = E7AF665517938AD0000EE96C /* Build configuration list for PBXProject "ObjectMapping" */;
+			buildConfigurationList = E7AF665517938AD0000EE96C /* Build configuration list for PBXProject "OHMKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -220,8 +229,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E7AF665917938AD0000EE96C /* ObjectMapping */,
-				E7AF666917938AD0000EE96C /* ObjectMappingTests */,
+				E7AF665917938AD0000EE96C /* OHMKit */,
+				E7AF666917938AD0000EE96C /* OHMKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -262,7 +271,7 @@
 /* Begin PBXTargetDependency section */
 		E7AF667117938AD0000EE96C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E7AF665917938AD0000EE96C /* ObjectMapping */;
+			target = E7AF665917938AD0000EE96C /* OHMKit */;
 			targetProxy = E7AF667017938AD0000EE96C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -350,9 +359,9 @@
 			buildSettings = {
 				DSTROOT = /tmp/ObjectMapping.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectMapping/ObjectMapping-Prefix.pch";
+				GCC_PREFIX_HEADER = "ObjectMapping/OHMKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OHMKit;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -362,9 +371,9 @@
 			buildSettings = {
 				DSTROOT = /tmp/ObjectMapping.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectMapping/ObjectMapping-Prefix.pch";
+				GCC_PREFIX_HEADER = "ObjectMapping/OHMKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OHMKit;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -377,13 +386,13 @@
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectMapping/ObjectMapping-Prefix.pch";
+				GCC_PREFIX_HEADER = "ObjectMapping/OHMKit-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "ObjectMappingTests/ObjectMappingTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "ObjectMappingTests/OHMKitTests-Info.plist";
+				PRODUCT_NAME = OHMKitTests;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -396,9 +405,9 @@
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ObjectMapping/ObjectMapping-Prefix.pch";
-				INFOPLIST_FILE = "ObjectMappingTests/ObjectMappingTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "ObjectMapping/OHMKit-Prefix.pch";
+				INFOPLIST_FILE = "ObjectMappingTests/OHMKitTests-Info.plist";
+				PRODUCT_NAME = OHMKitTests;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -406,7 +415,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E7AF665517938AD0000EE96C /* Build configuration list for PBXProject "ObjectMapping" */ = {
+		E7AF665517938AD0000EE96C /* Build configuration list for PBXProject "OHMKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AF667B17938AD0000EE96C /* Debug */,
@@ -415,7 +424,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7AF667D17938AD0000EE96C /* Build configuration list for PBXNativeTarget "ObjectMapping" */ = {
+		E7AF667D17938AD0000EE96C /* Build configuration list for PBXNativeTarget "OHMKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AF667E17938AD0000EE96C /* Debug */,
@@ -424,7 +433,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7AF668017938AD0000EE96C /* Build configuration list for PBXNativeTarget "ObjectMappingTests" */ = {
+		E7AF668017938AD0000EE96C /* Build configuration list for PBXNativeTarget "OHMKitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AF668117938AD0000EE96C /* Debug */,

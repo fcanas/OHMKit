@@ -13,8 +13,8 @@ Fit this JSON
 
 ```
 {
-  'name' = 'Fabian',
-  'favorite_word' =  'absurd',
+  'name': 'Fabian',
+  'favorite_word':  'absurd',
   'favorite_number': 47
 }
 ```
@@ -257,4 +257,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fcanas/ohmkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
