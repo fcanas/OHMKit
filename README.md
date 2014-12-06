@@ -11,17 +11,17 @@ OHMKit is a simple system for declaratively expressing how to translate response
 
 Fit this JSON
 
-```
+```json
 {
-  'name': 'Fabian',
-  'favorite_word':  'absurd',
-  'favorite_number': 47
+  "name": "Fabian",
+  "favorite_word":  "absurd",
+  "favorite_number": 47
 }
 ```
 
 into this object
 
-```
+```objc
 @interface MYModel : NSObject
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *favoriteWord;
@@ -55,7 +55,7 @@ OHMKit doesn't know about CoreData. It will not manage graphs of entities for yo
 
 Given a model
 
-```
+```objc
 @interface MYModel : NSObject
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *favoriteWord;
@@ -65,7 +65,7 @@ Given a model
 
 Anywhere in you application, make the model mappable, and assign it a dictionary of mappings from the keys a service will provide to the keys your actual model object uses. 
 
-```
+```objc
 OHMMappable([MYModel class]);
 OHMSetMapping([MYModel class], @{@"favorite_word"  : @"favoriteWord",
                                  @"favorite_number": @"favoriteNumber");
@@ -73,7 +73,7 @@ OHMSetMapping([MYModel class], @{@"favorite_word"  : @"favoriteWord",
 	
 And now anywhere in your application, objects of the class `MYModel` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
-```
+```objc
 MYModel *testModel = [[MYModel alloc] init];
 
 [testModel setValuesForKeysWithDictionary:@{@"name"           : @"Fabian",
@@ -85,7 +85,7 @@ MYModel *testModel = [[MYModel alloc] init];
 
 You don't have to do anything special to get recursive mapping of mappable objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it. (If that didn't make sense, just read the next code snippet)
 
-```
+```objc
 @interface MYClass : NSObject
 @property (nonatomic, strong) NSString *name;
 @end
@@ -124,7 +124,7 @@ Arrays of dictionaries can be mapped to a class as well.
 
 (This array feature is not included in the `0.0.5` release. It is present at the head of the master branch.)
 
-```
+```objc
 @interface Person : NSObject
 @property (nonatomic, copy) NSString *name;
 @end
@@ -148,7 +148,7 @@ Roster *roster = [Roster new];
 
 Users can pass a dictionary of blocks for field requiring special handling. Say a service sends back a dictionary that looks something like this:
 
-```
+```json
 {
     "favorite_color": [
         122,
@@ -165,7 +165,7 @@ Users can pass a dictionary of blocks for field requiring special handling. Say 
 
 and we expect to map it to a model like this
 
-```
+```objc
 @interface MYModel : NSObject
 @property (nonatomic, strong) UIColor *favoriteColor;
 @property (nonatomic, strong) UIColor *leastFavoriteColor;
@@ -174,7 +174,7 @@ and we expect to map it to a model like this
 
 You can adapt the response with an adapter block:
 
-```	
+```objc
 OHMMappable([MYModel class]);
 OHMSetMapping([MYModel class], @"least_favorite_color" : @"leastFavoriteColor", @"favorite_color" : @"favoriteColor")
 OHMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
@@ -195,7 +195,7 @@ The `OHMValueAdapterBlock` type is a block that takes an `id` and returns an `id
 
 Use [CocoaPods](http://www.cocoapods.org), add OHMKit to your `PodFile`, and run `$ pod install`
 
-```
+```ruby
 pod 'OHMKit'
 ```
 
