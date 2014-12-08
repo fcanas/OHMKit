@@ -7,7 +7,7 @@
 
 OHMKit makes it easy to hydrate Objective-C model objects from web services or local files. It works especially well with JSON. It's a lot like [Mantle](https://github.com/Mantle/Mantle) and [JSONModel](https://github.com/icanzilb/JSONModel) except that OHMKit doesn't require your models to inherit from a base class, making it more suitable for use with [Core Data](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html), [Parse](https://parse.com/), [Realm](http://realm.io/), or other libraries that _do_ require you to inherit from a base class.
 
-OHMKit is a simple system for declaratively expressing how to translate responses from a JSON or plist representation to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code.
+OHMKit is a system for declaratively expressing how to translate data from JSON or plist to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code and in your service code where it may be more approriate.
 
 Fit this JSON
 
@@ -71,7 +71,7 @@ OHMSetMapping([MYModel class], @{@"favorite_word"  : @"favoriteWord",
                                  @"favorite_number": @"favoriteNumber");
 ```
 	
-And now anywhere in your application, objects of the class `MYModel` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
+And now _anywhere_ in your application, objects of the class `MYModel` can be hydrated with a dictionary from a service whose keys will be translated by the mapping dictionary you provided.
 
 ```objc
 MYModel *testModel = [[MYModel alloc] init];
@@ -83,7 +83,7 @@ MYModel *testModel = [[MYModel alloc] init];
 
 ### Recursive Mapping
 
-You don't have to do anything special to get recursive mapping of mappable objects. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it. (If that didn't make sense, just read the next code snippet)
+Recursive mapping of mappable objects comes for free. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it. 
 
 ```objc
 @interface MYClass : NSObject
@@ -122,8 +122,6 @@ Internally, the new model object is initialized with `[[ alloc] init]`, and then
 
 Arrays of dictionaries can be mapped to a class as well.
 
-(This array feature is not included in the `0.0.5` release. It is present at the head of the master branch.)
-
 ```objc
 @interface Person : NSObject
 @property (nonatomic, copy) NSString *name;
@@ -144,7 +142,7 @@ Roster *roster = [Roster new];
 [roster setValuesForKeysWithDictionary:response];
 ```
 
-### Adapter Blocks to handle special properties
+### Blocks serve as adapters to handle special properties
 
 Users can pass a dictionary of blocks for field requiring special handling. Say a service sends back a dictionary that looks something like this:
 
@@ -203,7 +201,7 @@ pod 'OHMKit'
 
 OHMKit is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
 
-It leverages the existing power of Key Value Coding ([KVC](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/KeyValueCoding.html)) that's built right in to Cocoa. It safely wraps `-setValue:forKey:` and `-setValue:forUndefinedKey:` to make calls to `setValuesForKeysWithDictionary:` extremely powerful.
+It leverages the power of Key Value Coding ([KVC](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/KeyValueCoding.html)) that's built right in to Cocoa. It safely wraps `-setValue:forKey:` and `-setValue:forUndefinedKey:` to make calls to `setValuesForKeysWithDictionary:` extremely powerful.
 
 ## Contributing
 
@@ -225,7 +223,7 @@ Option 2 is currently the only behavior, and I'm inclined to leave is as the def
 
 ### NSCoding
 
-It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be (had you noticed?).
+It might be nice if we built a way to make a class `NSCoding` compatible if it's not already. I like [Mantle](https://github.com/github/Mantle), but I don't want to be told what my super class should be.
 
 ### NSValueTransformer
 
