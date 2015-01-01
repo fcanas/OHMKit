@@ -7,7 +7,7 @@
 
 OHMKit makes it easy to hydrate Objective-C model objects from web services or local files. It works especially well with JSON. It's a lot like [Mantle](https://github.com/Mantle/Mantle) and [JSONModel](https://github.com/icanzilb/JSONModel) except that OHMKit doesn't require your models to inherit from a base class, making it more suitable for use with [Core Data](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html), [Parse](https://parse.com/), [Realm](http://realm.io/), or other libraries that _do_ require you to inherit from a base class.
 
-OHMKit is a system for declaratively expressing how to translate data from JSON or plist to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code and in your service code where it may be more approriate.
+OHMKit is a system for declaratively expressing how to translate data from JSON or plist to native Objective-C model objects. OHMKit does it without requiring your model to inherit from a base class, so it works with NSObjects, NSManagedObjects, or anything else that fits with your class hierarchy. And you can specify custom mappings anywhere you want, not just in the model. So you can keep the details of mapping a service to you models out of your model code and in your service code where it may be more appropriate.
 
 Fit this JSON
 
@@ -29,7 +29,7 @@ into this object
 @end
 ```
 
-Map `user_name` from your web service to `userName` in your Objective-C models. Map a dictionary of numbers to a `UIColor`. Or hydrate a whole hierarchical JSON response, including arrays, dictionaries, and arbitrarily deep heirarchies of real Objective-C objects ... with a single line of code.
+Map `user_name` from your web service to `userName` in your Objective-C models. Map a dictionary of numbers to a `UIColor`. Or hydrate a whole hierarchical JSON response, including arrays, dictionaries, and arbitrarily deep hierarchies of real Objective-C objects ... with a single line of code.
 
 ## Why?
 
