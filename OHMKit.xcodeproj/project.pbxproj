@@ -204,7 +204,7 @@
 				E711F9FF198C718E00973D5F /* OHMAdapters.h */,
 			);
 			name = Core;
-			path = ../../Core;
+			path = ../Core;
 			sourceTree = "<group>";
 		};
 		E7C1C3801A8E7A4500ABF294 /* OHMKit-iOS */ = {
@@ -741,6 +741,7 @@
 				E7C1C3931A8E7A4500ABF294 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E7C1C3B01A8E7A6E00ABF294 /* Build configuration list for PBXNativeTarget "OHMKit-OSX" */ = {
 			isa = XCConfigurationList;
@@ -749,6 +750,7 @@
 				E7C1C3B21A8E7A6E00ABF294 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
