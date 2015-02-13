@@ -1,5 +1,5 @@
 language: objective-c
-xcode_project: ObjectMapping/OHMKit.xcodeproj
+xcode_project: OHMKit.xcodeproj
 xcode_scheme: ObjectMapping
 xcode_sdk:
   - iphonesimulator7.0
