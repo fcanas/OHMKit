@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E7C1C37E1A8E7A4500ABF294"
-               BuildableName = "OHMKit-iOS.framework"
-               BlueprintName = "OHMKit-iOS"
+               BuildableName = "OHMKitiOS.framework"
+               BlueprintName = "OHMKitiOS"
                ReferencedContainer = "container:OHMKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E7C1C37E1A8E7A4500ABF294"
-            BuildableName = "OHMKit-iOS.framework"
-            BlueprintName = "OHMKit-iOS"
+            BuildableName = "OHMKitiOS.framework"
+            BlueprintName = "OHMKitiOS"
             ReferencedContainer = "container:OHMKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +76,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E7C1C37E1A8E7A4500ABF294"
-            BuildableName = "OHMKit-iOS.framework"
-            BlueprintName = "OHMKit-iOS"
+            BuildableName = "OHMKitiOS.framework"
+            BlueprintName = "OHMKitiOS"
             ReferencedContainer = "container:OHMKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -94,8 +94,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E7C1C37E1A8E7A4500ABF294"
-            BuildableName = "OHMKit-iOS.framework"
-            BlueprintName = "OHMKit-iOS"
+            BuildableName = "OHMKitiOS.framework"
+            BlueprintName = "OHMKitiOS"
             ReferencedContainer = "container:OHMKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

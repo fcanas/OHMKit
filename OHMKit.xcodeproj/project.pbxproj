@@ -308,9 +308,9 @@
 			productReference = E7AF666A17938AD0000EE96C /* OHMKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E7C1C37E1A8E7A4500ABF294 /* OHMKit-iOS */ = {
+		E7C1C37E1A8E7A4500ABF294 /* OHMKitiOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7C1C3961A8E7A4500ABF294 /* Build configuration list for PBXNativeTarget "OHMKit-iOS" */;
+			buildConfigurationList = E7C1C3961A8E7A4500ABF294 /* Build configuration list for PBXNativeTarget "OHMKitiOS" */;
 			buildPhases = (
 				E7C1C37A1A8E7A4500ABF294 /* Sources */,
 				E7C1C37B1A8E7A4500ABF294 /* Frameworks */,
@@ -321,14 +321,14 @@
 			);
 			dependencies = (
 			);
-			name = "OHMKit-iOS";
+			name = OHMKitiOS;
 			productName = "OHMKit-iOS";
 			productReference = E7C1C37F1A8E7A4500ABF294 /* OHMKit-iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E7C1C39C1A8E7A6D00ABF294 /* OHMKit-OSX */ = {
+		E7C1C39C1A8E7A6D00ABF294 /* OHMKitOSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7C1C3B01A8E7A6E00ABF294 /* Build configuration list for PBXNativeTarget "OHMKit-OSX" */;
+			buildConfigurationList = E7C1C3B01A8E7A6E00ABF294 /* Build configuration list for PBXNativeTarget "OHMKitOSX" */;
 			buildPhases = (
 				E7C1C3981A8E7A6D00ABF294 /* Sources */,
 				E7C1C3991A8E7A6D00ABF294 /* Frameworks */,
@@ -339,7 +339,7 @@
 			);
 			dependencies = (
 			);
-			name = "OHMKit-OSX";
+			name = OHMKitOSX;
 			productName = "OHMKit-OSX";
 			productReference = E7C1C39D1A8E7A6D00ABF294 /* OHMKit-OSX.framework */;
 			productType = "com.apple.product-type.framework";
@@ -376,8 +376,8 @@
 			targets = (
 				E7AF665917938AD0000EE96C /* OHMKit */,
 				E7AF666917938AD0000EE96C /* OHMKitTests */,
-				E7C1C37E1A8E7A4500ABF294 /* OHMKit-iOS */,
-				E7C1C39C1A8E7A6D00ABF294 /* OHMKit-OSX */,
+				E7C1C37E1A8E7A4500ABF294 /* OHMKitiOS */,
+				E7C1C39C1A8E7A6D00ABF294 /* OHMKitOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -734,7 +734,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7C1C3961A8E7A4500ABF294 /* Build configuration list for PBXNativeTarget "OHMKit-iOS" */ = {
+		E7C1C3961A8E7A4500ABF294 /* Build configuration list for PBXNativeTarget "OHMKitiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7C1C3921A8E7A4500ABF294 /* Debug */,
@@ -743,7 +743,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7C1C3B01A8E7A6E00ABF294 /* Build configuration list for PBXNativeTarget "OHMKit-OSX" */ = {
+		E7C1C3B01A8E7A6E00ABF294 /* Build configuration list for PBXNativeTarget "OHMKitOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7C1C3B11A8E7A6E00ABF294 /* Debug */,
