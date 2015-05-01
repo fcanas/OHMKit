@@ -1,7 +1,12 @@
 language: objective-c
-xcode_project: ObjectMapping/OHMKit.xcodeproj
-xcode_scheme: ObjectMapping
-xcode_sdk:
-  - iphonesimulator7.0
-  - iphonesimulator7.1
-  # - iphonesimulator6.1
+rvm:
+- 2.0.0 # For CocoaPods, which requires ruby 2.0 and above
+env:
+  global:
+  - LANG=en_US.UTF-8
+install:
+- bundle install --jobs=3
+script:
+- rake run_tests
+- rake lint_podspec
+after_success: slather
