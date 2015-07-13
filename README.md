@@ -233,7 +233,7 @@ Adapter blocks versus `NSValueTransformer`s. There's no reason why both can't co
 # License
 
 ```
-Copyright (c) 2013-2014 Fabian Canas. All rights reserved.
+Copyright (c) 2013-2015 Fabian Canas. All rights reserved.
 
 This code is distributed under the terms and conditions of the MIT license.
 
