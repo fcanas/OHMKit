@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
 [![License](https://img.shields.io/cocoapods/l/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
 [![Platform](https://img.shields.io/cocoapods/p/OHMKit.svg?style=flat)](http://cocoadocs.org/docsets/OHMKit)
-[![Coverage Status](https://coveralls.io/repos/fcanas/OHMKit/badge.svg?branch=build)](https://coveralls.io/r/fcanas/OHMKit?branch=build)
+[![Coverage Status](https://coveralls.io/repos/fcanas/OHMKit/badge.svg?branch=master&service=github)](https://coveralls.io/github/fcanas/OHMKit?branch=master)
 
 OHMKit makes it easy to hydrate Objective-C model objects from web services or local files. It works especially well with JSON. It's a lot like [Mantle](https://github.com/Mantle/Mantle) and [JSONModel](https://github.com/icanzilb/JSONModel) except that OHMKit doesn't require your models to inherit from a base class, making it more suitable for use with [Core Data](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html), [Parse](https://parse.com/), [Realm](http://realm.io/), or other libraries that _do_ require you to inherit from a base class.
 
