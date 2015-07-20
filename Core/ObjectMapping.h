@@ -43,7 +43,7 @@
 
  @param dictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
-+ (void)ohm_setMapping:(NSDictionary *)dictionary;
++ (void)ohm_setMapping:(nullable NSDictionary *)dictionary;
 
 /**
  Sets the dictionary of value adapters for keys. 
@@ -52,7 +52,7 @@
  
  @param dictionary A dictionary target key, value adapter pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a block of type OHMValueAdapterBlock, or conforming to the signature id(^)(id).
  */
-+ (void)ohm_setAdapter:(NSDictionary *)dictionary;
++ (void)ohm_setAdapter:(nullable NSDictionary *)dictionary;
 
 /**
  Sets the dictionary of key to array class.
@@ -61,7 +61,7 @@
  
  @param dictionary A dictionary target key, Class pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a Class that has been made OHMMappable.
  */
-+ (void)ohm_setArrayClasses:(NSDictionary *)dictionary;
++ (void)ohm_setArrayClasses:(nullable NSDictionary *)dictionary;
 
 /**
  Sets the dictionary of key to dictionary class.
@@ -70,7 +70,7 @@
  
  @param dictionary A dictionary target key, Class pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a Class that has been made OHMMappable.
  */
-+ (void)ohm_setDictionaryClasses:(NSDictionary *)dictionary;
++ (void)ohm_setDictionaryClasses:(nullable NSDictionary *)dictionary;
 @end
 
 #pragma mark - Supporting Functions
@@ -78,7 +78,7 @@
 /**
  Enable a class as mappable.
  */
-extern void OHMMappable(Class c);
+extern void OHMMappable(__nonnull Class c);
 
 /**
  Sets the dictionary for mapping keys.
@@ -88,7 +88,8 @@ extern void OHMMappable(Class c);
  @param c The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
-extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMSetMapping(__nonnull Class c, NSDictionary * __nullable
+                          mappingDictionary);
 
 /**
  Adds the key value pairs from the passed dictionary to the existing mapping dictionary.
@@ -100,7 +101,7 @@ extern void OHMSetMapping(Class c, NSDictionary *mappingDictionary);
  @param c The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key, target key pairs, all strings. The target key (or values in the dictionary) must be a KVC key the class can already respond to. OHMKit does not perform multiple key mappings.
  */
-extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
+extern void OHMAddMapping(__nonnull Class c, NSDictionary * __nullable mappingDictionary);
 
 /**
  Remove the mapping for each key in @p keyArray on the given class.
@@ -108,7 +109,7 @@ extern void OHMAddMapping(Class c, NSDictionary *mappingDictionary);
  @param c The class whose mappings should be removed.
  @param keyArray An array of keys to be removed from mapping.
  */
-extern void OHMRemoveMapping(Class c, NSArray *keyArray);
+extern void OHMRemoveMapping(__nonnull Class c, NSArray * __nullable keyArray);
 
 #pragma mark - Helpers
 
