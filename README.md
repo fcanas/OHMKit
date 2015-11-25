@@ -197,6 +197,19 @@ OHMValueAdapterBlock colorFromNumberArray = ^(NSArray *numberArray) {
 OHMSetAdapter([MYModel class], @{@"favoriteColor": colorFromNumberArray, @"leastFavoriteColor": colorFromNumberArray});
 ```
 
+When dehydrating, you can adapt the output with a reverse adapter block:
+
+```objc
+OHMMappable([MYModel class]);
+OHMSetMapping([MYModel class], @"least_favorite_color" : @"leastFavoriteColor", @"favorite_color" : @"favoriteColor")
+OHMValueAdapterBlock numberArrayFromColor = ^(NSColor *color) {
+	CGFloat red, green, blue, alpha;
+	[color getRed: &red green: &green blue: &blue alpha: &alpha];
+	return @[@(red), @(green), @(blue)];
+};
+OHMSetReverseAdapter([MYModel class], @{@"favoriteColor": numberArrayFromColor, @"leastFavoriteColor": colorFromNumberArray});
+```
+
 Note that the key for the adapter is the key on the model object, not on the response. And adapters are added for a property, not a type. If the above example had multiple properties that were colors, you would have to set an adapter block for each property. It would be smart to reuse adapter blocks in your code.
 
 The `OHMValueAdapterBlock` type is a block that takes an `id` and returns an `id`. *i.e* `typedef id(^OHMValueAdapterBlock)(id);`

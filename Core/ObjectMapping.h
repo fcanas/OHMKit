@@ -55,6 +55,15 @@
 + (void)ohm_setAdapter:(nullable NSDictionary *)dictionary;
 
 /**
+ Sets the dictionary of value reverse adapters for keys.
+ 
+ The key is a KVC key for which you would like to adapt outgoing values. NSNumbers do not need adapters to be mapped to primitive properties (e.g. int, NSInteger, float, BOOL). To adapt values to a property with a struct type, create an adapter block that creates the struct, and wrap it in an NSValue object and have the block return that NSValue.
+ 
+ @param dictionary A dictionary target key, value adapter pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a block of type OHMValueAdapterBlock, or conforming to the signature id(^)(id).
+ */
++ (void)ohm_setReverseAdapter:(nullable NSDictionary *)dictionary;
+
+/**
  Sets the dictionary of key to array class.
  
  The key is a KVC key corresponding to an NSAray or NSMutableArray for which you would like to fill with an array of objects of an OHMMappable class when given an array of dictionaries appropriate for hydrating that class.

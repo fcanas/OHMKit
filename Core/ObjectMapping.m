@@ -29,6 +29,7 @@
 
 static const void *_kOMClassMappingDictionaryKey = &_kOMClassMappingDictionaryKey;
 static const void *_kOMClassAdapterDictionaryKey = &_kOMClassAdapterDictionaryKey;
+static const void *_kOMClassReverseAdapterDictionaryKey = &_kOMClassReverseAdapterDictionaryKey;
 static const void *_kOMClassArrayDictionaryKey = &_kOMClassArrayDictionaryKey;
 static const void *_kOMClassDictionaryDictionaryKey = &_kOMClassDictionaryDictionaryKey;
 
@@ -87,6 +88,13 @@ static NSDictionary * f_ohm_mapping(Class c);
         id object = dictionary[key];
         if ([object conformsToProtocol:@protocol(OHMMappable)]) {
             dictionary[key] = [object dictionaryWithValuesForKeys: OHMMappableKeys([object class])];
+        }
+        
+        // Adapter
+        NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassReverseAdapterDictionaryKey);
+        OHMValueAdapterBlock adapterForKey = adapters[key];
+        if (adapterForKey) {
+            dictionary[key] = adapterForKey(dictionary[key]);
         }
     }
  
@@ -209,6 +217,11 @@ void ohm_setAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *diction
     OHMSetAdapter(self, dictionary);
 }
 
+void ohm_setReverseAdapterDictionary_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
+{
+    OHMSetReverseAdapter(self, dictionary);
+}
+
 void ohm_setArrayClasses_Class_IMP(id self, SEL _cmd, NSDictionary *dictionary)
 {
     OHMSetArrayClasses(self, dictionary);
@@ -293,6 +306,11 @@ void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
     ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
 
+void OHMSetReverseAdapter(Class c, NSDictionary *adapterDicionary)
+{
+    ohm_set_for_key(c, adapterDicionary, &_kOMClassReverseAdapterDictionaryKey);
+}
+
 #pragma TODO - Tests for add and remove adapter functions
 
 void OHMAddAdapter(Class c, NSDictionary *adapterDictionary)
@@ -300,9 +318,19 @@ void OHMAddAdapter(Class c, NSDictionary *adapterDictionary)
     ohm_add_for_key(c, adapterDictionary, &_kOMClassAdapterDictionaryKey);
 }
 
+void OHMAddReverseAdapter(Class c, NSDictionary *adapterDictionary)
+{
+    ohm_add_for_key(c, adapterDictionary, &_kOMClassReverseAdapterDictionaryKey);
+}
+
 void OHMRemoveAdapter(Class c, NSArray *keyArray)
 {
     ohm_remove_for_key(c, keyArray, &_kOMClassAdapterDictionaryKey);
+}
+
+void OHMRemoveReverseAdapter(Class c, NSArray *keyArray)
+{
+    ohm_remove_for_key(c, keyArray, &_kOMClassReverseAdapterDictionaryKey);
 }
 
 #pragma mark - Array
@@ -369,12 +397,14 @@ void OHMMappable(Class c)
     // Class method to set mapping dictionary and adapter dictionary
     struct objc_method_description m = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setMapping:), YES, NO);
     struct objc_method_description a = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setAdapter:), YES, NO);
+    struct objc_method_description ra = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setReverseAdapter:), YES, NO);
     struct objc_method_description r = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setArrayClasses:), YES, NO);
     struct objc_method_description d = protocol_getMethodDescription(@protocol(OHMMappable), @selector(ohm_setDictionaryClasses:), YES, NO);
     
     class_addProtocol(c, @protocol(OHMMappable));
     class_addMethod(meta_class, @selector(ohm_setMapping:), (IMP)ohm_setMappingDictionary_Class_IMP, m.types);
     class_addMethod(meta_class, @selector(ohm_setAdapter:), (IMP)ohm_setAdapterDictionary_Class_IMP, a.types);
+    class_addMethod(meta_class, @selector(ohm_setReverseAdapter:), (IMP)ohm_setReverseAdapterDictionary_Class_IMP, ra.types);
     class_addMethod(meta_class, @selector(ohm_setArrayClasses:), (IMP)ohm_setArrayClasses_Class_IMP, r.types);
     class_addMethod(meta_class, @selector(ohm_setDictionaryClasses:), (IMP)ohm_setDictionaryClasses_Class_IMP, d.types);
 }
