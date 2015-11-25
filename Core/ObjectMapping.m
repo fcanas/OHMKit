@@ -80,7 +80,7 @@ static NSDictionary * f_ohm_mapping(Class c);
     }
 }
 
-- (NSDictionary<NSString *, id> *)ohm_dictionaryWithValuesForKeys:(NSArray<NSString *> *)keys
+- (NSDictionary *)ohm_dictionaryWithValuesForKeys:(NSArray *)keys
 {
     NSMutableDictionary* dictionary = [[self ohm_dictionaryWithValuesForKeys: keys] mutableCopy];
     for (NSString *key in [dictionary allKeys]) {
