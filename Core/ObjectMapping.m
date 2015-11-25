@@ -48,10 +48,13 @@ static NSDictionary * f_ohm_mapping(Class c);
         Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
         method_exchangeImplementations(svfk, svfk_om);
         
-        
         Method svfuk = class_getInstanceMethod([NSObject class], @selector(setValue:forUndefinedKey:));
         Method svfuk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forUndefinedKey:));
         method_exchangeImplementations(svfuk, svfuk_om);
+        
+        Method dwvfk = class_getInstanceMethod([NSObject class], @selector(dictionaryWithValuesForKeys:));
+        Method dwvfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_dictionaryWithValuesForKeys:));
+        method_exchangeImplementations(dwvfk, dwvfk_om);
     });
 }
 
@@ -75,6 +78,30 @@ static NSDictionary * f_ohm_mapping(Class c);
     } else {
         [self ohm_setValue:value forUndefinedKey:key];
     }
+}
+
+- (NSDictionary<NSString *, id> *)ohm_dictionaryWithValuesForKeys:(NSArray<NSString *> *)keys
+{
+    NSMutableDictionary* dictionary = [[self ohm_dictionaryWithValuesForKeys: keys] mutableCopy];
+    for (NSString *key in [dictionary allKeys]) {
+        id object = dictionary[key];
+        if ([object conformsToProtocol:@protocol(OHMMappable)]) {
+            dictionary[key] = [object dictionaryWithValuesForKeys: OHMMappableKeys([object class])];
+        }
+    }
+ 
+    NSMutableDictionary *mapping = [f_ohm_mapping([self class]) mutableCopy];
+    if (mapping) {
+        for (NSString *key in [mapping allKeys]) {
+            NSString *mappedKey = mapping[key];
+            mapping[key] = dictionary[mappedKey];
+            [dictionary removeObjectForKey: mappedKey];
+        }
+        [mapping addEntriesFromDictionary: dictionary];
+        dictionary = mapping;
+    }
+
+    return dictionary;
 }
 
 @end
@@ -314,6 +341,23 @@ void OHMAddDictionaryClasses(Class c, NSDictionary *classDictionary)
 void OHMRemoveDictionary(Class c, NSArray *keyArray)
 {
     ohm_remove_for_key(c, keyArray, &_kOMClassDictionaryDictionaryKey);
+}
+
+NSArray* OHMMappableKeys(Class c)
+{
+    NSMutableArray *mutable = [[NSMutableArray alloc] init];
+    while (strcmp(class_getName(c),"NSObject")) {
+        unsigned int count = 0;
+        objc_property_t *properties = class_copyPropertyList(c, &count);
+        for (int i = 0 ; i < count ; i++) {
+            objc_property_t property = properties[i];
+            NSString *name = [NSString stringWithFormat: @"%s", property_getName(property)];
+            [mutable addObject: name];
+        }
+        free(properties);
+        c = class_getSuperclass(c);
+    }
+    return mutable;
 }
 
 void OHMMappable(Class c)

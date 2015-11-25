@@ -89,6 +89,39 @@
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
 }
 
+- (void)testDehydrationWithoutMappingDictionary
+{
+    OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
+    basicModel.name = @"Fabian";
+    basicModel.favoriteWord = @"absurd";
+    basicModel.favoriteNumber = 47;
+    
+    NSDictionary *dictionary = [basicModel dictionaryWithValuesForKeys: OHMMappableKeys([OMTBasicModel class])];
+    
+    XCTAssertEqualObjects(dictionary[@"name"], @"Fabian", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"favoriteWord"], @"absurd", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
+    XCTAssertTrue([dictionary[@"favoriteNumber"] integerValue]==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+}
+
+- (void)testDehydrationWithMappingDictionary
+{
+    OHMSetMapping([OMTBasicModel class], @{@"favorite_word" : @"favoriteWord",
+                                           @"favorite_number" : @"favoriteNumber"});
+    OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
+    basicModel.name = @"Fabian";
+    basicModel.favoriteWord = @"absurd";
+    basicModel.favoriteNumber = 47;
+    
+    NSDictionary *dictionary = [basicModel dictionaryWithValuesForKeys: OHMMappableKeys([OMTBasicModel class])];
+    
+    XCTAssertEqualObjects(dictionary[@"name"], @"Fabian", @"OTMBasicModel should have its name set with a correct key with a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"favorite_word"], @"absurd", @"OTMBasicModel should have its word set with a correct key with a mapping dictionary");
+    XCTAssertNil(dictionary[@"favoriteWord"], @"OTMBasicModel should not have its word set for pre-mapped key with a mapping dictionary");
+    XCTAssertTrue([dictionary[@"favorite_number"] integerValue]==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+    XCTAssertNil(dictionary[@"favoriteNumber"], @"OTMBasicModel should not have its number set for pre-mapped key with a mapping dictionary");
+}
+
+
 #pragma mark - Protocol Conformance
 
 - (void)testProtocolConformance

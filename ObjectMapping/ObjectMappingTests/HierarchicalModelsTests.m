@@ -73,6 +73,7 @@
 
 - (void)tearDown
 {
+    OHMRemoveAdapter([OMTHierarchyChildWithUnmappedRootModel class], @[@"rootUnmappedProperty"]);
     [super tearDown];
 }
 
@@ -109,5 +110,28 @@
     XCTAssertEqualObjects(model.mappedCrossModelProperty.rootProperty, @"48", @"");
     XCTAssertEqualObjects(model.mappedCrossModelProperty.childProperty, @"c", @"");
 }
+
+- (void)testDehydrateUnmappedRootHierarchy
+{
+    OHMMappable([OMTHierarchyChildWithUnmappedRootModel class]);
+    OHMMappable([OMTHierarchyChildModel class]);
+    OHMSetAdapter([OMTHierarchyChildWithUnmappedRootModel class], @{@"rootUnmappedProperty": self.fourtySevenAdapter});
+
+    OMTHierarchyChildWithUnmappedRootModel *model = [OMTHierarchyChildWithUnmappedRootModel new];
+    model.rootUnmappedProperty = @"48";
+    model.childMappedProperty = @"c";
+    model.mappedCrossModelProperty = [[OMTHierarchyChildModel alloc] init];
+    model.mappedCrossModelProperty.rootProperty = @"r";
+    model.mappedCrossModelProperty.childProperty = @"c";
+    
+    NSDictionary *dictionary = [model dictionaryWithValuesForKeys: OHMMappableKeys([OMTHierarchyChildWithUnmappedRootModel class])];
+    
+    XCTAssertEqualObjects(dictionary[@"rootUnmappedProperty"], @"48", @"An unmapped root hierarchy property should be mapped by a mappable child");
+    XCTAssertEqualObjects(dictionary[@"childMappedProperty"], @"c", @"A mapped child hierarchy property should be mapped with an unmapped root");
+    XCTAssertTrue([dictionary[@"mappedCrossModelProperty"] isKindOfClass: [NSDictionary class]], @"A mapped child hierarchy property should be mapped to a dictionary");
+    XCTAssertEqualObjects(dictionary[@"mappedCrossModelProperty"][@"rootProperty"], @"r", @"");
+    XCTAssertEqualObjects(dictionary[@"mappedCrossModelProperty"][@"childProperty"], @"c", @"");
+}
+
 
 @end
