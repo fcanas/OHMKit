@@ -90,6 +90,32 @@ static NSDictionary * f_ohm_mapping(Class c);
             dictionary[key] = [object dictionaryWithValuesForKeys: OHMMappableKeys([object class])];
         }
         
+        // Array
+        if ([object isKindOfClass: [NSArray class]]) {
+            object = [object mutableCopy];
+            for (int index = 0 ; index < [object count] ; index++) {
+                id value = [object objectAtIndex: index];
+                if ([value conformsToProtocol:@protocol(OHMMappable)]) {
+                    [object replaceObjectAtIndex: index
+                                      withObject: [value dictionaryWithValuesForKeys: OHMMappableKeys([value class])]];
+                }
+            }
+            dictionary[key] = object;
+        }
+
+        // Dictionary
+        if ([object isKindOfClass: [NSDictionary class]]) {
+            object = [object mutableCopy];
+            for (NSString *objectKey in [object allKeys]) {
+                id value = [object objectForKey: objectKey];
+                if ([value conformsToProtocol:@protocol(OHMMappable)]) {
+                    [object setValue: [value dictionaryWithValuesForKeys: OHMMappableKeys([value class])]
+                              forKey: objectKey];
+                }
+            }
+            dictionary[key] = object;
+        }
+
         // Adapter
         NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassReverseAdapterDictionaryKey);
         OHMValueAdapterBlock adapterForKey = adapters[key];
