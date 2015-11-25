@@ -81,6 +81,15 @@
 extern void OHMMappable(__nonnull Class c);
 
 /**
+ Returns array of mappable mappable keys.
+ 
+ The returned array can be used as parameter for dictionaryWithValuesForKeys:.
+ 
+ @param c The class for which to get the mapped keys array.
+ */
+extern NSArray* __nonnull OHMMappableKeys(__nonnull Class c);
+
+/**
  Sets the dictionary for mapping keys.
  
  The key is a key you would like to map from, what might be called a source key such as @p @@"favorite_color". The values corresponds to the KVC key you would like to map it to, what might be called a target key such as @p @@"favoriteColor".

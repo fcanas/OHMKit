@@ -82,6 +82,18 @@ MYModel *testModel = [[MYModel alloc] init];
                                             @"favorite_number": @47];
 ```
 
+Likewise, _anywhere_ in your application, objects of the class `MYModel` can be dehydrated to a dictionary for use with a service whose keys will be translated by the mapping dictionary you provided.
+
+```objc
+MYModel *testModel = [[MYModel alloc] init];
+testModel.name = @"Fabian";
+testModel.favoriteWord = @"absurd";
+testModel.favoriteNumber = 47;
+
+NSDictionary *dictionary = [testModel dictionaryWithValuesForKeys:OHMMappableKeys([MYModel class])];
+```
+
+
 ### Recursive Mapping
 
 Recursive mapping of mappable objects comes for free. If an object conforming to `<OMMappable>` has a property whose type also conforms to `<OMMappable>`, and the value for that key in the hydration dictionary is itself a dictionary, we'll instantiate a new model object and hydrate it. 
@@ -202,7 +214,7 @@ pod 'OHMKit'
 
 OHMKit is a [mixin](http://en.wikipedia.org/wiki/Mixin) that makes it easy to keep any direct knowledge of the idiosyncrasies of the service you're consuming tucked away in a single place. 
 
-It leverages the power of Key Value Coding ([KVC](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/KeyValueCoding.html)) that's built right in to Cocoa. It safely wraps `-setValue:forKey:` and `-setValue:forUndefinedKey:` to make calls to `setValuesForKeysWithDictionary:` extremely powerful.
+It leverages the power of Key Value Coding ([KVC](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/KeyValueCoding.html)) that's built right in to Cocoa. It safely wraps `-setValue:forKey:` and `-setValue:forUndefinedKey:` to make calls to `setValuesForKeysWithDictionary:` and `dictionaryWithValuesForKeys:` extremely powerful.
 
 ## Contributing
 
