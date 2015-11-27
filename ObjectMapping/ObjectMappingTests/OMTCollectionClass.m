@@ -102,6 +102,11 @@
     
     XCTAssertEqualObjects(arrayModel.arrayOfStrings[0], @"hi", @"Arrays of non-mapped objects should be correctly set");
     XCTAssertEqualObjects(arrayModel.arrayOfStrings[1], @"there", @"Arrays of non-mapped objects should be correctly set");
+
+    NSDictionary *dictionary = [arrayModel dictionaryWithValuesForKeys:OHMMappableKeys([arrayModel class])];
+    
+    XCTAssertEqualObjects(dictionary[@"arrayOfStrings"][0], @"hi", @"Arrays of non-mapped objects should be correctly set");
+    XCTAssertEqualObjects(dictionary[@"arrayOfStrings"][1], @"there", @"Arrays of non-mapped objects should be correctly set");
 }
 
 - (void)testSetDictionaryClass
@@ -133,6 +138,17 @@
     XCTAssertEqualObjects(basicModel2.name, @"Music", @"OTMBasicModel should have its name set with a correct key w/o a mapping dictionary");
     XCTAssertEqualObjects(basicModel2.favoriteWord, @"glitter", @"OTMBasicModel should have its word set with a correct key w/o a mapping dictionary");
     XCTAssertTrue(basicModel2.favoriteNumber==7, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+    
+    NSDictionary *dictionary = [dictionaryModel dictionaryWithValuesForKeys:OHMMappableKeys([dictionaryModel class])];
+    
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key1"][@"name"], @"Fabian", @"Dictionary should have its name set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key1"][@"favoriteWord"], @"absurd", @"Dictionary should have its word set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key1"][@"favoriteNumber"], @47, @"Dictionary should have its number set with a correct key w/o a mapping dictionary");
+    
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key2"][@"name"], @"Music", @"Dictionary should have its name set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key2"][@"favoriteWord"], @"glitter", @"Dictionary should have its word set with a correct key w/o a mapping dictionary");
+    XCTAssertEqualObjects(dictionary[@"dictionaryOfBasicModels"][@"key2"][@"favoriteNumber"], @7, @"Dictionary should have its number set with a correct key w/o a mapping dictionary");
 }
+
 
 @end

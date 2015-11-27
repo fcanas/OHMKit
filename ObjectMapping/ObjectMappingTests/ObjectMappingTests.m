@@ -46,6 +46,7 @@
 - (void)tearDown
 {
     [super tearDown];
+    OHMRemoveReverseAdapter([OMTBasicModel class], @[@"favoriteNumber"]);
 }
 
 #pragma mark - Helper Tests
@@ -219,6 +220,23 @@
     [basicModel setValuesForKeysWithDictionary:@{@"favoriteNumber" : @"fourty-seven"}];
     
     XCTAssertTrue(basicModel.favoriteNumber==47, @"OTMBasicModel should have its number set with a correct key w/o a mapping dictionary");
+}
+
+- (void)testBasicReverseValueAdapter
+{
+    OHMValueAdapterBlock fourtySevenReverseAdapter = ^(id object){
+        if ([object isEqual:@47]) {
+            return @"fourty-seven";
+        }
+        return (NSString*)nil;
+    };
+    OHMSetReverseAdapter([OMTBasicModel class], @{@"favoriteNumber" : fourtySevenReverseAdapter});
+    
+    OMTBasicModel *basicModel = [[OMTBasicModel alloc] init];
+    basicModel.favoriteNumber = 47;
+    
+    NSDictionary *dictionary = [basicModel dictionaryWithValuesForKeys:OHMMappableKeys([OMTBasicModel class])];
+    XCTAssertEqualObjects(dictionary[@"favoriteNumber"], @"fourty-seven", @"Dictionary should have its number set with a correct key w/o a mapping dictionary");
 }
 
 - (void)testValueAdapterMethod
