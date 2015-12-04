@@ -400,13 +400,18 @@ void OHMRemoveDictionary(Class c, NSArray *keyArray)
 NSArray* OHMMappableKeys(Class c)
 {
     NSMutableArray *mutable = [[NSMutableArray alloc] init];
-    while (strcmp(class_getName(c),"NSObject")) {
+    while (strcmp(class_getName(c), "NSObject")) {
         unsigned int count = 0;
         objc_property_t *properties = class_copyPropertyList(c, &count);
         for (int i = 0 ; i < count ; i++) {
             objc_property_t property = properties[i];
-            NSString *name = [NSString stringWithFormat: @"%s", property_getName(property)];
-            [mutable addObject: name];
+            const char *name = property_getName(property);
+            if (strcmp(name, "hash") &&
+                strcmp(name, "superclass") &&
+                strcmp(name, "description") &&
+                strcmp(name, "debugDescription")) {
+                [mutable addObject: @(name)];
+            }
         }
         free(properties);
         c = class_getSuperclass(c);
