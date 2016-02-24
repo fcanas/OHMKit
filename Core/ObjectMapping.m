@@ -122,6 +122,11 @@ static NSDictionary * f_ohm_mapping(Class c);
         if (adapterForKey) {
             dictionary[key] = adapterForKey(dictionary[key]);
         }
+
+        // Remove any keys whose values won't be encodable
+        if (![dictionary[key] conformsToProtocol: @protocol(NSCoding)]) {
+            [dictionary removeObjectForKey: key];
+        }
     }
  
     NSMutableDictionary *mapping = [f_ohm_mapping([self class]) mutableCopy];
