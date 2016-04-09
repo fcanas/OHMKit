@@ -332,12 +332,12 @@ void OHMRemoveMapping(Class c, NSArray *array)
 
 #pragma mark - Adapter
 
-void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetAdapter(Class c, NSDictionary<NSString*, OHMValueAdapterBlock> *adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
 
-void OHMSetReverseAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetReverseAdapter(Class c, NSDictionary<NSString*, OHMValueAdapterBlock> *adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassReverseAdapterDictionaryKey);
 }

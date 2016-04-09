@@ -17,7 +17,7 @@
  @param class The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
  */
-extern void OHMSetArrayClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMSetArrayClasses(__nonnull Class _class, NSDictionary * __nullable classDictionary);
 
 /**
  Adds the key value pairs from the passed dictionary to the existing array mapping dictionary.
@@ -29,7 +29,7 @@ extern void OHMSetArrayClasses(__nonnull Class class, NSDictionary * __nullable 
  @param class The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
  */
-extern void OHMAddArrayClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMAddArrayClasses(__nonnull Class _class, NSDictionary * __nullable classDictionary);
 
 /**
  Remove the array mapping class for each key in @p keyArray on the given class.
@@ -37,6 +37,6 @@ extern void OHMAddArrayClasses(__nonnull Class class, NSDictionary * __nullable 
  @param class The class whose array mappings should be removed.
  @param keyArray An array of keys to be removed from array mapping.
  */
-extern void OHMRemoveArray(__nonnull Class class, NSArray * __nullable keyArray);
+extern void OHMRemoveArray(__nonnull Class _class, NSArray * __nullable keyArray);
 
 #endif

@@ -9,6 +9,10 @@
 #ifndef OHMKit_OHMAdapters_h
 #define OHMKit_OHMAdapters_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  A convenience block type that takes a single @p id and returns a single @p id.
 
@@ -24,7 +28,7 @@ typedef __nullable id(^OHMValueAdapterBlock)(__nullable id);
  @param c The class on which to set the adapter dictionary.
  @param dictionary A dictionary target key, value adapter pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a block of type @p OHMValueAdapterBlock, or conforming to the signature @p id(^)(id).
  */
-extern void OHMSetAdapter(__nonnull Class c, NSDictionary * __nullable adapterDictionary);
+extern void OHMSetAdapter(__nonnull Class c, NSDictionary<NSString*, OHMValueAdapterBlock> * __nullable adapterDictionary);
 
 /**
  Sets the dictionary of reverse value adapters for keys.
@@ -34,7 +38,7 @@ extern void OHMSetAdapter(__nonnull Class c, NSDictionary * __nullable adapterDi
  @param c The class on which to set the adapter dictionary.
  @param dictionary A dictionary target key, value adapter pairs. The target key (or keys in the dictionary) must be a KVC key the class can already respond to. The value must be a block of type @p OHMValueAdapterBlock, or conforming to the signature @p id(^)(id).
  */
-extern void OHMSetReverseAdapter(__nonnull Class c, NSDictionary * __nullable adapterDictionary);
+extern void OHMSetReverseAdapter(__nonnull Class c, NSDictionary<NSString*, OHMValueAdapterBlock> * __nullable adapterDictionary);
 
 /**
  Adds the key value pairs from the passed dictionary to the existing adapter dictionary.
@@ -71,5 +75,9 @@ extern void OHMRemoveAdapter(__nonnull Class c, NSArray * __nullable keyArray);
  @param keyArray An array of keys to for which adapters should be removed.
  */
 extern void OHMRemoveReverseAdapter(__nonnull Class c, NSArray * __nullable keyArray);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

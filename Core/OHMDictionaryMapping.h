@@ -17,7 +17,7 @@
  @param class The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
  */
-extern void OHMSetDictionaryClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMSetDictionaryClasses(__nonnull Class _class, NSDictionary * __nullable classDictionary);
 
 /**
  Adds the key value pairs from the passed dictionary to the existing dictionary mapping dictionary.
@@ -29,7 +29,7 @@ extern void OHMSetDictionaryClasses(__nonnull Class class, NSDictionary * __null
  @param class The class on which to set the mapping dictionary.
  @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
  */
-extern void OHMAddDictionaryClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMAddDictionaryClasses(__nonnull Class _class, NSDictionary * __nullable classDictionary);
 
 /**
  Remove the dictionary mapping class for each key in @p keyArray on the given class.
@@ -37,6 +37,6 @@ extern void OHMAddDictionaryClasses(__nonnull Class class, NSDictionary * __null
  @param class The class whose mappings should be removed.
  @param keyArray An array of keys to be removed from dictionary mapping.
  */
-extern void OHMRemoveDictionary(__nonnull Class class, NSArray * __nullable keyArray);
+extern void OHMRemoveDictionary(__nonnull Class _class, NSArray * __nullable keyArray);
 
 #endif

@@ -96,7 +96,7 @@ extern void OHMMappable(__nonnull Class c);
  
  @param c The class for which to get the mapped keys array.
  */
-extern NSArray* __nonnull OHMMappableKeys(__nonnull Class c);
+extern NSArray<NSString*>* __nonnull OHMMappableKeys(__nonnull Class c);
 
 /**
  Sets the dictionary for mapping keys.
