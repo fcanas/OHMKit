@@ -122,6 +122,11 @@ static NSDictionary * f_ohm_mapping(Class c);
         if (adapterForKey) {
             dictionary[key] = adapterForKey(dictionary[key]);
         }
+
+        // Remove any keys whose values won't be encodable
+        if (![dictionary[key] conformsToProtocol: @protocol(NSCoding)]) {
+            [dictionary removeObjectForKey: key];
+        }
     }
  
     NSMutableDictionary *mapping = [f_ohm_mapping([self class]) mutableCopy];
@@ -327,12 +332,12 @@ void OHMRemoveMapping(Class c, NSArray *array)
 
 #pragma mark - Adapter
 
-void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetAdapter(Class c, NSDictionary<NSString*, OHMValueAdapterBlock> *adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
 
-void OHMSetReverseAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetReverseAdapter(Class c, NSDictionary<NSString*, OHMValueAdapterBlock> *adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassReverseAdapterDictionaryKey);
 }
@@ -400,13 +405,18 @@ void OHMRemoveDictionary(Class c, NSArray *keyArray)
 NSArray* OHMMappableKeys(Class c)
 {
     NSMutableArray *mutable = [[NSMutableArray alloc] init];
-    while (strcmp(class_getName(c),"NSObject")) {
+    while (strcmp(class_getName(c), "NSObject")) {
         unsigned int count = 0;
         objc_property_t *properties = class_copyPropertyList(c, &count);
         for (int i = 0 ; i < count ; i++) {
             objc_property_t property = properties[i];
-            NSString *name = [NSString stringWithFormat: @"%s", property_getName(property)];
-            [mutable addObject: name];
+            const char *name = property_getName(property);
+            if (strcmp(name, "hash") &&
+                strcmp(name, "superclass") &&
+                strcmp(name, "description") &&
+                strcmp(name, "debugDescription")) {
+                [mutable addObject: @(name)];
+            }
         }
         free(properties);
         c = class_getSuperclass(c);
