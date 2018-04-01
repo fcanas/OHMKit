@@ -84,7 +84,7 @@ static NSDictionary * f_ohm_mapping(Class c);
 - (NSDictionary *)ohm_dictionaryWithValuesForKeys:(NSArray *)keys
 {
     NSMutableDictionary* dictionary = [[self ohm_dictionaryWithValuesForKeys: keys] mutableCopy];
-    for (NSString *key in [dictionary allKeys]) {
+    for (NSString *key in dictionary.allKeys) {
         id object = dictionary[key];
         if ([object conformsToProtocol:@protocol(OHMMappable)]) {
             dictionary[key] = [object dictionaryWithValuesForKeys: OHMMappableKeys([object class])];
@@ -93,11 +93,10 @@ static NSDictionary * f_ohm_mapping(Class c);
         // Array
         if ([object isKindOfClass: [NSArray class]]) {
             object = [object mutableCopy];
-            for (int index = 0 ; index < [object count] ; index++) {
-                id value = [object objectAtIndex: index];
+            for (NSUInteger index = 0 ; index < [object count] ; index++) {
+                id value = object[index];
                 if ([value conformsToProtocol:@protocol(OHMMappable)]) {
-                    [object replaceObjectAtIndex: index
-                                      withObject: [value dictionaryWithValuesForKeys: OHMMappableKeys([value class])]];
+                    object[index] = [value dictionaryWithValuesForKeys: OHMMappableKeys([value class])];
                 }
             }
             dictionary[key] = object;
@@ -107,7 +106,7 @@ static NSDictionary * f_ohm_mapping(Class c);
         if ([object isKindOfClass: [NSDictionary class]]) {
             object = [object mutableCopy];
             for (NSString *objectKey in [object allKeys]) {
-                id value = [object objectForKey: objectKey];
+                id value = object[objectKey];
                 if ([value conformsToProtocol:@protocol(OHMMappable)]) {
                     [object setValue: [value dictionaryWithValuesForKeys: OHMMappableKeys([value class])]
                               forKey: objectKey];
@@ -126,7 +125,7 @@ static NSDictionary * f_ohm_mapping(Class c);
  
     NSMutableDictionary *mapping = [f_ohm_mapping([self class]) mutableCopy];
     if (mapping) {
-        for (NSString *key in [mapping allKeys]) {
+        for (NSString *key in mapping.allKeys) {
             NSString *mappedKey = mapping[key];
             mapping[key] = dictionary[mappedKey];
             [dictionary removeObjectForKey: mappedKey];
@@ -193,15 +192,15 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
     }
     
     // Recursive Mapping
-    objc_property_t p = class_getProperty([self class], [key UTF8String]);
-    uint propertyCount = 0;
+    objc_property_t p = class_getProperty([self class], key.UTF8String);
+    unsigned int propertyCount = 0;
     objc_property_attribute_t *properties = property_copyAttributeList(p, &propertyCount);
     
-    for (int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
+    for (unsigned int propertyIndex = 0; propertyIndex<propertyCount; propertyIndex++) {
         objc_property_attribute_t property = properties[propertyIndex];
         if (property.name[0]=='T' && strlen(property.value)>3 && property.value[0] == '@') {
             const char *name = property.value;
-            Class propertyClass = objc_getClass([[NSData dataWithBytes:(name + 2) length:strlen(name) - 3] bytes]);
+            Class propertyClass = objc_getClass([NSData dataWithBytes:(name + 2) length:strlen(name) - 3].bytes);
             if (class_conformsToProtocol(propertyClass, @protocol(OHMMappable))) {
                 if ([value isKindOfClass:[NSDictionary class]]) {
                     id p = [[propertyClass alloc] init];
@@ -403,7 +402,7 @@ NSArray* OHMMappableKeys(Class c)
     while (strcmp(class_getName(c),"NSObject")) {
         unsigned int count = 0;
         objc_property_t *properties = class_copyPropertyList(c, &count);
-        for (int i = 0 ; i < count ; i++) {
+        for (unsigned int i = 0 ; i < count ; i++) {
             objc_property_t property = properties[i];
             NSString *name = [NSString stringWithFormat: @"%s", property_getName(property)];
             [mutable addObject: name];
