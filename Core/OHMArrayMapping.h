@@ -9,27 +9,42 @@
 #ifndef OHMKit_OHMArrayMapping_h
 #define OHMKit_OHMArrayMapping_h
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Sets the passed dictionary as the array mapping dictionary for the class.
 
- The keys should correspond to keys on the model object that is of type NSArray, such as @p @@"favoriteColors". The values are the class of objects conforming to OHMMappable that the array should be populated with. When a mapping is performed, if a data source contains an array of dicitonaries for the given key, an array of target classes populated from those dictionaries will be set instead.
+ The keys should correspond to keys on the model object that is of type NSArray,
+ such as @p @@"favoriteColors". The values are the class of objects conforming
+ to OHMMappable that the array should be populated with. When a mapping is
+ performed, if a data source contains an array of dicitonaries for the given key,
+ an array of target classes populated from those dictionaries will be set instead.
 
  @param class The class on which to set the mapping dictionary.
- @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
+ @param classDictionary A dictionary source key of strings, and target values
+ of OHMMappable classes.
  */
-extern void OHMSetArrayClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMSetArrayClasses(Class class, NSDictionary<NSString *, Class> * _Nullable classDictionary);
 
 /**
- Adds the key value pairs from the passed dictionary to the existing array mapping dictionary.
+ Adds the key value pairs from the passed dictionary to the existing array
+ mapping dictionary.
 
- If there is no existing array mapping dictionary, one is created. If a value for a passed-in key exists, it will be overwritten.
+ If there is no existing array mapping dictionary, one is created. If a value
+ for a passed-in key exists, it will be overwritten.
 
- The key is a key a key on the model object that is of type NSArray, such as @p @@"favoriteColors". The values are the class of objects conforming to OHMMappable that the array should be populated with. When a mapping is performed, if a data source contains an array of dicitonaries for the given key, an array of target classes populated from those dictionaries will be set instead.
+ The key is a key a key on the model object that is of type NSArray, such as
+ @p @@"favoriteColors". The values are the class of objects conforming to
+ OHMMappable that the array should be populated with. When a mapping is
+ performed, if a data source contains an array of dicitonaries for the given key,
+ an array of target classes populated from those dictionaries will be set
+ instead.
 
  @param class The class on which to set the mapping dictionary.
- @param mappingDictionary A dictionary source key of strings, and target values of OHMMappable classes.
+ @param classDictionary A dictionary source key of strings, and target values
+ of OHMMappable classes.
  */
-extern void OHMAddArrayClasses(__nonnull Class class, NSDictionary * __nullable classDictionary);
+extern void OHMAddArrayClasses(Class class, NSDictionary<NSString *, Class> *classDictionary);
 
 /**
  Remove the array mapping class for each key in @p keyArray on the given class.
@@ -37,6 +52,8 @@ extern void OHMAddArrayClasses(__nonnull Class class, NSDictionary * __nullable 
  @param class The class whose array mappings should be removed.
  @param keyArray An array of keys to be removed from array mapping.
  */
-extern void OHMRemoveArray(__nonnull Class class, NSArray * __nullable keyArray);
+extern void OHMRemoveArray(Class class, NSArray<NSString *> *keyArray);
+
+NS_ASSUME_NONNULL_END
 
 #endif

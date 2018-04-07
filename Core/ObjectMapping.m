@@ -47,19 +47,25 @@ static NSDictionary * f_ohm_mapping(Class c);
     dispatch_once(&once, ^{
         Method svfk = class_getInstanceMethod([NSObject class], @selector(setValue:forKey:));
         Method svfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forKey:));
+        NSAssert(svfk != nil, @"OHMKit fatal error: -setValue:forKey: missing on NSObject");
+        NSAssert(svfk_om != nil, @"OHMKit fatal error: -ohm_setValue:forKey: missing on NSObject category");
         method_exchangeImplementations(svfk, svfk_om);
         
         Method svfuk = class_getInstanceMethod([NSObject class], @selector(setValue:forUndefinedKey:));
         Method svfuk_om = class_getInstanceMethod([NSObject class], @selector(ohm_setValue:forUndefinedKey:));
+        NSAssert(svfk != nil, @"OHMKit fatal error: -setValue:forUndefinedKey: missing on NSObject");
+        NSAssert(svfk_om != nil, @"OHMKit fatal error: -ohm_setValue:forUndefinedKey: missing on NSObject category");
         method_exchangeImplementations(svfuk, svfuk_om);
         
         Method dwvfk = class_getInstanceMethod([NSObject class], @selector(dictionaryWithValuesForKeys:));
         Method dwvfk_om = class_getInstanceMethod([NSObject class], @selector(ohm_dictionaryWithValuesForKeys:));
+        NSAssert(svfk != nil, @"OHMKit fatal error: -dictionaryWithValuesForKeys: missing on NSObject");
+        NSAssert(svfk_om != nil, @"OHMKit fatal error: -ohm_dictionaryWithValuesForKeys: missing on NSObject category");
         method_exchangeImplementations(dwvfk, dwvfk_om);
     });
 }
 
-- (void)ohm_setValue:(id)value forKey:(NSString *)key
+- (void)ohm_setValue:(_Nullable id)value forKey:(nonnull NSString *)key
 {
     bool proceed = true;
     if ([self conformsToProtocol:@protocol(OHMMappable)]) {
@@ -72,7 +78,7 @@ static NSDictionary * f_ohm_mapping(Class c);
     }
 }
 
-- (void)ohm_setValue:(id)value forUndefinedKey:(NSString *)key
+- (void)ohm_setValue:(_Nullable id)value forUndefinedKey:(nonnull NSString *)key
 {
     if ([self conformsToProtocol:@protocol(OHMMappable)]) {
         ohm_setValueForUndefinedKey_f(self, _cmd, value, key);
@@ -81,7 +87,7 @@ static NSDictionary * f_ohm_mapping(Class c);
     }
 }
 
-- (NSDictionary *)ohm_dictionaryWithValuesForKeys:(NSArray *)keys
+- (nonnull NSDictionary *)ohm_dictionaryWithValuesForKeys:(nonnull NSArray<NSString *> *)keys
 {
     NSMutableDictionary* dictionary = [[self ohm_dictionaryWithValuesForKeys: keys] mutableCopy];
     for (NSString *key in dictionary.allKeys) {
@@ -149,7 +155,7 @@ bool ohm_setValueForKey_f(id self, SEL _cmd, id value, NSString *key)
     }
     
     // Adapter
-    NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+    NSDictionary<NSString *, OHMValueAdapterBlock> *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
     OHMValueAdapterBlock adapterForKey = adapters[key];
     if (adapterForKey) {
         value = adapterForKey(value);
@@ -221,7 +227,7 @@ void ohm_setValueForUndefinedKey_f(id self, SEL _cmd, id value, NSString *key)
 {
     NSString *newKey = f_ohm_mapping([self class])[key];
     if (newKey != nil) {
-        NSDictionary *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
+        NSDictionary<NSString *, OHMValueAdapterBlock> *adapters = objc_getAssociatedObject([self class], &_kOMClassAdapterDictionaryKey);
         OHMValueAdapterBlock adapterForKey = adapters[newKey];
         if (adapterForKey) {
             value = adapterForKey(value);
@@ -286,19 +292,19 @@ static NSMutableDictionary * ohm_mutableDictionary(NSDictionary *dictionary)
     return m;
 }
 
-static inline void ohm_set_for_key(Class c, id value, const void *key)
+static inline void ohm_set_for_key(_Nonnull Class c, _Nullable id value, const void * _Nonnull key)
 {
     objc_setAssociatedObject(c, key, value, OBJC_ASSOCIATION_COPY);
 }
 
-static inline void ohm_add_for_key(Class c, NSDictionary *dict, const void *key)
+static inline void ohm_add_for_key(_Nonnull Class c, NSDictionary * _Nonnull dict, const void * _Nonnull key)
 {
     NSMutableDictionary *existingMapping = ohm_mutableDictionary(objc_getAssociatedObject(c, key));
     [existingMapping addEntriesFromDictionary:dict];
     ohm_set_for_key(c, existingMapping, key);
 }
 
-static inline void ohm_remove_for_key(Class c, NSArray *keys, const void *key)
+static inline void ohm_remove_for_key(_Nonnull Class c, NSArray * _Nonnull keys, const void * _Nonnull key)
 {
     NSMutableDictionary *mutableMapping = ohm_mutableDictionary(f_ohm_mapping(c));
     [mutableMapping removeObjectsForKeys:keys];
@@ -309,12 +315,12 @@ static inline void ohm_remove_for_key(Class c, NSArray *keys, const void *key)
 
 #pragma mark - Mapping
 
-void OHMSetMapping(Class c, NSDictionary *mappingDictionary)
+void OHMSetMapping(_Nonnull Class c, NSDictionary * _Nullable mappingDictionary)
 {
     ohm_set_for_key(c, mappingDictionary, &_kOMClassMappingDictionaryKey);
 }
 
-void OHMAddMapping(Class c, NSDictionary *mappingDictionary)
+void OHMAddMapping(_Nonnull Class c, NSDictionary<NSString *, NSString *> * _Nonnull mappingDictionary)
 {
     ohm_add_for_key(c, mappingDictionary, &_kOMClassMappingDictionaryKey);
 }
@@ -326,24 +332,24 @@ void OHMRemoveMapping(Class c, NSArray *array)
 
 #pragma mark - Adapter
 
-void OHMSetAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetAdapter(_Nonnull Class c,  NSDictionary<NSString *, OHMValueAdapterBlock> * _Nullable adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassAdapterDictionaryKey);
 }
 
-void OHMSetReverseAdapter(Class c, NSDictionary *adapterDicionary)
+void OHMSetReverseAdapter(_Nonnull Class c, NSDictionary * _Nullable adapterDicionary)
 {
     ohm_set_for_key(c, adapterDicionary, &_kOMClassReverseAdapterDictionaryKey);
 }
 
 #pragma TODO - Tests for add and remove adapter functions
 
-void OHMAddAdapter(Class c, NSDictionary *adapterDictionary)
+void OHMAddAdapter(__nonnull Class c, NSDictionary * _Nullable adapterDictionary)
 {
     ohm_add_for_key(c, adapterDictionary, &_kOMClassAdapterDictionaryKey);
 }
 
-void OHMAddReverseAdapter(Class c, NSDictionary *adapterDictionary)
+void OHMAddReverseAdapter(_Nonnull Class c, NSDictionary * _Nullable adapterDictionary)
 {
     ohm_add_for_key(c, adapterDictionary, &_kOMClassReverseAdapterDictionaryKey);
 }
@@ -360,14 +366,14 @@ void OHMRemoveReverseAdapter(Class c, NSArray *keyArray)
 
 #pragma mark - Array
 
-void OHMSetArrayClasses(Class c, NSDictionary *classDictionary)
+void OHMSetArrayClasses(_Nonnull Class c, NSDictionary * _Nullable classDictionary)
 {
     ohm_set_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
 }
 
 #pragma TODO - Tests for add and remove array functions
 
-void OHMAddArrayClasses(Class c, NSDictionary *classDictionary)
+void OHMAddArrayClasses(_Nonnull Class c, NSDictionary * _Nonnull classDictionary)
 {
     ohm_add_for_key(c, classDictionary, &_kOMClassArrayDictionaryKey);
 }
@@ -379,7 +385,7 @@ void OHMRemoveArray(Class c, NSArray *keyArray)
 
 #pragma mark - Dictionary
 
-void OHMSetDictionaryClasses(Class c, NSDictionary *classDictionary)
+void OHMSetDictionaryClasses(_Nonnull Class c, NSDictionary * _Nullable classDictionary)
 {
     ohm_set_for_key(c, classDictionary, &_kOMClassDictionaryDictionaryKey);
 }
